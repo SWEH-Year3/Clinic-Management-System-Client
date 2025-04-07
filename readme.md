@@ -1,6 +1,14 @@
-# Client Repo
+# Packages 
 
-## Use
+- React-router
+- chakra
+- bootstrap
+- tailwind
+- fontawsome
+- lucide
+- toastify
+- axios
+- joi
+- signalR
 
-1. Hold client side code
-2. track frontend tasks
+``npm i react-router-dom toastify  @chakra-ui/react @emotion/react bootstrap tailwindcss @tailwindcss/vite axios joi  @fortawesome/fontawesome-svg-core @fortawesome/free-brands-svg-icons  @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome@latest @microsoft/signalr   ``
