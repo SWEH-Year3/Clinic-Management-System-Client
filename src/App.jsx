@@ -1,7 +1,7 @@
 
 import {BrowserRouter} from 'react-router-dom'
-import Home from './page/HomePage/Home'
-
+// import Home from './page/HomePage/Home'
+import AboutPage from './page/AboutPage/AboutPage'
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -10,7 +10,7 @@ function App() {
     // <BrowserRouter>
     // </BrowserRouter>
     <div >
-      <Home/>
+      <AboutPage/>
     </div>
   )
 }
