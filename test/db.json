@@ -1,0 +1,428 @@
+{
+    "login":[
+        {
+            "username":"admin",
+            "password":"admin"
+        },
+        {
+            "username":"doctor",
+            "password":"doctor"
+        },
+        {
+            "username":"patient",
+            "password":"patient"
+        }
+    ],
+    "login-return":[
+        {
+            "id":1,
+            "email":"admin@mail.com",
+            "name":"admin",
+            "role":"admin",
+            "token":"1asda31",
+            "isLoggedIn":true
+        },
+        {
+            "id":2,
+            "email":"doctor@mail.com",
+            "name":"doctor",
+            "role":"doctor",
+            "token":"1asda31",
+            "isLoggedIn":true
+        },
+        {
+            "id":3,
+            "email":"patient@mail.com",
+            "name":"patient",
+            "role":"patient",
+            "token":"1asda31",
+            "isLoggedIn":true
+        }
+    ],
+    "register":[
+        {
+            "username":"admin",
+            "password":"admin"
+        },
+        {
+            "username":"doctor",
+            "password":"doctor"
+        },
+        {
+            "username":"patient",   
+            "password":"patient"
+        }
+    ],
+    "doctors":[
+        {
+            "id":1,
+            "name":"Dr. John Doe",
+            "specialty":"Cardiology",
+            "price":100.50,
+            "phone":"123-456-7890"
+        },
+        {
+            "id":2,
+            "name":"Dr. Jane Smith",
+            "specialty":"Dermatology",
+            "price":75.25,
+            "phone":"987-654-3210"
+        },
+        {
+            "id":3,
+            "name":"Dr. Michael Johnson",
+            "specialty":"Orthopedics",
+            "price":150.75,
+            "phone":"555-555-5555"
+        },
+        {
+            "id":4,
+            "name":"Dr. Emily Davis",
+            "specialty":"Gynecology",
+            "price":200.00,
+            "phone":"111-222-3333"
+        },
+        {
+            "id":5,
+            "name":"Dr. Robert Wilson",
+            "specialty":"Pediatrics",
+            "price":100.50,
+            "phone":"444-555-6666"
+        }
+    ],
+    "patients":[
+        {
+            "id":10,
+            "name":"John Doe",
+            "phone":"123-456-7890",
+            "email":"johndoe@mail"
+        },
+        {
+            "id":11,
+            "name":"Jane Smith",
+            "phone":"987-654-3210",
+            "email":"janesmith@mail"
+        },
+        {
+            "id":12,
+            "name":"Michael Johnson",
+            "phone":"555-555-5555",
+            "email":"michaeljohnson@mail"
+        },
+        {
+            "id":13,
+            "name":"Emily Davis",   
+            "phone":"111-222-3333",
+            "email":"emilydavis@mail"   
+        },
+        {
+            "id":14,
+            "name":"Robert Wilson",
+            "phone":"444-555-6666",
+            "email":"robertwilson@mail"
+        }
+    ],
+    "appointments":[
+        {
+            "id":1,
+            "patientId":10,
+            "doctorId":1,
+            "specialty":"Cardiology",
+            "date":"2023-05-01",
+            "time":"10:00 AM",
+            "state":"pending"
+        },
+        {
+            "id":2,
+            "patientId":11,
+            "doctorId":2,
+            "specialty":"Dermatology",
+            "date":"2023-05-02",
+            "time":"11:00 AM",
+            "state":"Ongoing"
+        },
+        {
+            "id":3,
+            "patientId":12,
+            "doctorId":3,
+            "specialty":"Orthopedics",
+            "date":"2023-05-03",
+            "time":"12:00 PM",
+            "state":"Closed"
+        },
+        {
+            "id":4,
+            "patientId":13,
+            "doctorId":4,
+            "specialty":"Gynecology",
+            "date":"2023-05-04",
+            "time":"1:00 PM",
+            "state":"pending"
+        },
+        {
+            "id":5,
+            "patientId":14,
+            "doctorId":5,
+            "specialty":"Pediatrics",
+            "date":"2023-05-05",
+            "time":"2:00 PM",
+            "state":"Ongoing"
+        }
+    ],
+    "prescriptions":[
+        {
+            "id":1,
+            "patientId":10,
+            "doctorId":1,
+            "date":"2023-05-01",
+            "content": "Paracetamol 500mg"
+        },
+        {
+            "id":2,
+            "patientId":11,
+            "doctorId":2,
+            "date":"2023-05-02",
+            "content": "Ibuprofen 200mg"
+        },
+        {
+            "id":3,
+            "patientId":12,
+            "doctorId":3,
+            "date":"2023-05-03",
+            "content": "Aspirin 75mg"
+        },
+        {
+            "id":4,
+            "patientId":13,
+            "doctorId":4,
+            "date":"2023-05-04",
+            "content": "Cetirizine 10mg"
+        },
+        {
+            "id":5,
+            "patientId":14,
+            "doctorId":5,
+            "date":"2023-05-05",
+            "content": "Metformin 500mg"    
+        }
+    ],
+    "chatList":[
+        {
+            "id":1,
+            "patientId":10,
+            "doctorId":1,
+            "patientName":"John Doe",
+            "doctorName":"Dr. John Doe"
+        },
+        {
+            "id":2,
+            "patientId":11,
+            "doctorId":2,
+            "patientName":"Jane Smith",
+            "doctorName":"Dr. Jane Smith"
+        },
+        {
+            "id":3,
+            "patientId":12,
+            "doctorId":3,
+            "patientName":"Michael Johnson",
+            "doctorName":"Dr. Michael Johnson"
+        },
+        {
+            "id":4,
+            "patientId":13,
+            "doctorId":4,
+            "patientName":"Emily Davis",
+            "doctorName":"Dr. Emily Davis"
+        },
+        {
+            "id":5,
+            "patientId":14,
+            "doctorId":5,
+            "patientName":"Robert Wilson",
+            "doctorName":"Dr. Robert Wilson"
+        },
+        {
+            "id":6,
+            "patientId":10,
+            "doctorId":3,
+            "patientName":"John Doe",
+            "doctorName":"Dr. Michael Johnson"
+        },
+        {
+            "id":7,
+            "patientId":11,
+            "doctorId":5,
+            "patientName":"Jane Smith",
+            "doctorName":"Dr. Robert Wilson"
+        },
+        {
+            "id":8,
+            "patientId":12,
+            "doctorId":4,
+            "patientName":"Michael Johnson",
+            "doctorName":"Dr. Emily Davis"
+        },
+        {
+            "id":9,
+            "patientId":13,
+            "doctorId":1,
+            "patientName":"Emily Davis",
+            "doctorName":"Dr. John Doe"
+        },
+        {
+            "id":10,
+            "patientId":14,
+            "doctorId":2,
+            "patientName":"Robert Wilson",
+            "doctorName":"Dr. Jane Smith"
+        }
+    ],
+    "reportList":[
+        {
+            "doctorName":"Dr. Emily Davis",
+            "doctorId": 2,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. John Doe",
+            "doctorId": 3,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Michael Johnson",
+            "doctorId": 4,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Jane Smith",
+            "doctorId": 5,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Robert Wilson",
+            "doctorId": 6,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Emily Davis",
+            "doctorId": 7,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. John Doe",
+            "doctorId": 8,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Michael Johnson",
+            "doctorId": 9,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Jane Smith",
+            "doctorId": 10,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Robert Wilson",
+            "doctorId": 11,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Emily Davis",
+            "doctorId": 12,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. John Doe",
+            "doctorId": 13,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Michael Johnson",
+            "doctorId": 14,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Jane Smith",
+            "doctorId": 15,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Robert Wilson",
+            "doctorId": 16,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Emily Davis",
+            "doctorId": 17,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. John Doe",
+            "doctorId": 18,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Michael Johnson",
+            "doctorId": 19,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Jane Smith",
+            "doctorId": 20,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Robert Wilson",
+            "doctorId": 21,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Emily Davis",
+            "doctorId": 22,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. John Doe",
+            "doctorId": 23,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Michael Johnson",
+            "doctorId": 24,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Jane Smith",
+            "doctorId": 25,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Robert Wilson",
+            "doctorId": 26,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Emily Davis",
+            "doctorId": 27,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. John Doe",
+            "doctorId": 28,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Michael Johnson",
+            "doctorId": 29,
+            "TotalAppointment":3
+        },
+        {
+            "doctorName":"Dr. Jane Smith",
+            "doctorId": 30,
+            "TotalAppointment":3
+        }
+    ]
+}
