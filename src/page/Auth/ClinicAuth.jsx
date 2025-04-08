@@ -19,8 +19,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const ClinicAuth = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(true);
   const [userRole, setUserRole] = useState("patient");
   const [formData, setFormData] = useState({
@@ -32,22 +32,19 @@ const ClinicAuth = () => {
     specialization: "",
   });
 
-    useEffect(() => {
-        if (location.pathname == '/login')
-        {
-            setIsSignIn(true);
-        }
-        else {
-            setIsSignIn(false);
-        }
-    }, [location.pathname]);
+  useEffect(() => {
+    if (location.pathname == "/login") {
+      setIsSignIn(true);
+    } else {
+      setIsSignIn(false);
+    }
+  }, [location.pathname]);
   const { setUser } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,15 +64,14 @@ const ClinicAuth = () => {
       const { email, password } = formData;
       //   const username = email.split('@')[0];
 
-        if (!isSignIn)
-        {
-            await axios.post("http://localhost:3000/login-return", {
-                email,
-                password,
-                role: 'patient',
-                isLoggedIn: true
-            })
-        }
+      if (!isSignIn) {
+        await axios.post("http://localhost:3000/login-return", {
+          email,
+          password,
+          role: "patient",
+          isLoggedIn: true,
+        });
+      }
       const response = await axios.get("http://localhost:3000/login-return");
       const matchedUser = response.data.find(
         (u) => u.email === email && u.password === password
@@ -116,8 +112,11 @@ const ClinicAuth = () => {
       //     description: `${isSignIn ? 'Login' : 'Registration'} successful!`,
       //     meta: { closable: true }
       //   });
+
+      // To-Do: store user in local storage
+      // To-Do: navigate user to its home page
       toast.success(`${isSignIn ? "Login" : "Registration"} successful!`);
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       //   toaster.create({
       //     type: 'error',
