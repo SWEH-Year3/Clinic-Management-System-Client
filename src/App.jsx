@@ -1,7 +1,8 @@
 
 import {BrowserRouter} from 'react-router-dom'
-// import Home from './page/HomePage/Home'
-import AboutPage from './page/AboutPage/AboutPage'
+// import AboutUsPage from './page/AboutPage/AboutPage.jsx'
+import HomePage from './page/HomePage/Home'
+import NavBar from './global/components/NavBar'
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -10,7 +11,9 @@ function App() {
     // <BrowserRouter>
     // </BrowserRouter>
     <div >
-      <AboutPage/>
+      <NavBar/>
+      <HomePage/>
+      {/* <AboutPage/> */}
     </div>
   )
 }
