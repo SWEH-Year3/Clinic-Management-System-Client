@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { toaster } from '../../components/ui/toaster';
-import { useAuth } from '../../Context/AuthContext';
-import '../Auth/ClinicAuth.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toaster } from "../../components/ui/toaster";
+import { toast } from "react-toastify";
+import { useAuth } from "../../Context/AuthContext";
+import "../Auth/ClinicAuth.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   faUser,
   faEnvelope,
@@ -12,84 +15,119 @@ import {
   faIdCard,
   faStethoscope,
   faSignInAlt,
-  faUserPlus
-} from '@fortawesome/free-solid-svg-icons';
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ClinicAuth = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(true);
-  const [userRole, setUserRole] = useState('patient');
+  const [userRole, setUserRole] = useState("patient");
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    licenseNumber: '',
-    specialization: ''
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    licenseNumber: "",
+    specialization: "",
   });
 
+    useEffect(() => {
+        if (location.pathname == '/login')
+        {
+            setIsSignIn(true);
+        }
+        else {
+            setIsSignIn(false);
+        }
+    }, [location.pathname]);
   const { setUser } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleRoleChange = (e) => {
-    setUserRole(e.target.value);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isSignIn && formData.password !== formData.confirmPassword) {
-      toaster.create({
-        type: 'error',
-        title: 'Password mismatch',
-        description: 'Passwords do not match.',
-        meta: { closable: true }
-      });
+      //   toaster.create({
+      //     type: 'error',
+      //     title: 'Password mismatch',
+      //     description: 'Passwords do not match.',
+      //     meta: { closable: true }
+      //   });
+      toast.error("Passwords do not match.");
       return;
     }
 
     try {
       const { email, password } = formData;
-      const username = email.split('@')[0];
+      //   const username = email.split('@')[0];
 
-      const response = await axios.get('http://localhost:3000/login-return');
-      const matchedUser = response.data.find(u => u.name === username && password === username);
-
+        if (!isSignIn)
+        {
+            await axios.post("http://localhost:3000/login-return", {
+                email,
+                password,
+                role: 'patient',
+                isLoggedIn: true
+            })
+        }
+      const response = await axios.get("http://localhost:3000/login-return");
+      const matchedUser = response.data.find(
+        (u) => u.email === email && u.password === password
+      );
+      console.log(matchedUser);
+      // console.log(response.data)
+      // console.log(formData)
       if (!matchedUser) {
-        toaster.create({
-          type: 'error',
-          title: 'Invalid credentials',
-          description: 'Username or password is incorrect.',
-          meta: { closable: true }
-        });
+        // toaster.create({
+        //   type: 'error',
+        //   title: 'Invalid credentials',
+        //   description: 'Username or password is incorrect.',
+        //   meta: { closable: true }
+        // });
+        toast.error("Username or password is incorrect.");
         return;
       }
 
       if (!isSignIn) {
         matchedUser.role = userRole;
-        if (userRole === 'doctor') {
+        if (userRole === "doctor") {
           matchedUser.licenseNumber = formData.licenseNumber;
           matchedUser.specialization = formData.specialization;
         }
       }
-
-      setUser(matchedUser);
-      toaster.create({
-        type: 'success',
-        title: `Welcome ${matchedUser.name}`,
-        description: `${isSignIn ? 'Login' : 'Registration'} successful!`,
-        meta: { closable: true }
+      // To-Do: Enable to set user in context
+      setUser({
+        email: matchedUser.email,
+        id: matchedUser.id,
+        token: matchedUser.token,
+        isLoggedIn: matchedUser.isLoggedIn,
+        role: matchedUser.role,
+        name: matchedUser.name,
       });
+      //   toaster.create({
+      //     type: 'success',
+      //     title: `Welcome ${matchedUser.name}`,
+      //     description: `${isSignIn ? 'Login' : 'Registration'} successful!`,
+      //     meta: { closable: true }
+      //   });
+      toast.success(`${isSignIn ? "Login" : "Registration"} successful!`);
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      toaster.create({
-        type: 'error',
-        title: isSignIn ? 'Login failed' : 'Registration failed',
-        description: `Something went wrong while ${isSignIn ? 'logging in' : 'registering'}.`,
-        meta: { closable: true }
-      });
+      //   toaster.create({
+      //     type: 'error',
+      //     title: isSignIn ? 'Login failed' : 'Registration failed',
+      //     description: `Something went wrong while ${isSignIn ? 'logging in' : 'registering'}.`,
+      //     meta: { closable: true }
+      //   });
+      toast.error(
+        `Something went wrong while ${isSignIn ? "logging in" : "registering"}.`
+      );
     }
   };
 
@@ -107,12 +145,29 @@ const ClinicAuth = () => {
         </div>
 
         <div className="auth-tabs">
-          <button className={`tab ${isSignIn ? 'active' : ''}`} onClick={() => setIsSignIn(true)}>Sign In</button>
-          <button className={`tab ${!isSignIn ? 'active' : ''}`} onClick={() => setIsSignIn(false)}>Sign Up</button>
-          <div className={`tab-indicator ${isSignIn ? 'sign-in' : 'sign-up'}`} />
+          <button
+            className={`tab ${isSignIn ? "active" : ""}`}
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Sign In
+          </button>
+          <button
+            className={`tab ${!isSignIn ? "active" : ""}`}
+            onClick={() => navigate("/register")}
+          >
+            Sign Up
+          </button>
+          <div
+            className={`tab-indicator ${isSignIn ? "sign-in" : "sign-up"}`}
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className={`auth-form ${isSignIn ? 'sign-in' : 'sign-up'}`}>
+        <form
+          onSubmit={handleSubmit}
+          className={`auth-form ${isSignIn ? "sign-in" : "sign-up"}`}
+        >
           {!isSignIn && (
             <>
               <div className="form-group">
@@ -124,12 +179,15 @@ const ClinicAuth = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   required
-                  placeholder={userRole === 'doctor' ? "Dr. John Smith" : "John Smith"}
+                  placeholder={
+                    userRole === "doctor" ? "Dr. John Smith" : "John Smith"
+                  }
                 />
                 <FontAwesomeIcon icon={faUser} className="input-icon" />
               </div>
 
-              <div className="form-group">
+              {/* To-Do: To be Removed */}
+              {/* <div className="form-group">
                 <label htmlFor="userRole">I am a:</label>
                 <select
                   id="userRole"
@@ -144,12 +202,14 @@ const ClinicAuth = () => {
                   <option value="admin">Administrator</option>
                 </select>
                 <FontAwesomeIcon icon={faUserTag} className="input-icon" />
-              </div>
+              </div> */}
 
-              {userRole === 'doctor' && !isSignIn && (
+              {userRole === "doctor" && !isSignIn && (
                 <>
                   <div className="form-group">
-                    <label htmlFor="licenseNumber">Medical License Number</label>
+                    <label htmlFor="licenseNumber">
+                      Medical License Number
+                    </label>
                     <input
                       type="text"
                       id="licenseNumber"
@@ -172,7 +232,10 @@ const ClinicAuth = () => {
                       required
                       placeholder="Cardiology"
                     />
-                    <FontAwesomeIcon icon={faStethoscope} className="input-icon" />
+                    <FontAwesomeIcon
+                      icon={faStethoscope}
+                      className="input-icon"
+                    />
                   </div>
                 </>
               )}
@@ -226,19 +289,37 @@ const ClinicAuth = () => {
           )}
 
           <button type="submit" className="submit-btn">
-            {isSignIn ? 'Sign In' : 'Create Account'}
-            <FontAwesomeIcon 
-              icon={isSignIn ? faSignInAlt : faUserPlus} 
-              className="btn-icon" 
+            {isSignIn ? "Sign In" : "Create Account"}
+            <FontAwesomeIcon
+              icon={isSignIn ? faSignInAlt : faUserPlus}
+              className="btn-icon"
             />
           </button>
         </form>
 
         <div className="auth-footer">
           {isSignIn ? (
-            <p>Don't have an account? <button type="button" onClick={toggleAuthMode} className="toggle-btn">Register here</button></p>
+            <p>
+              Don't have an account?{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/register")}
+                className="toggle-btn"
+              >
+                Register here
+              </button>
+            </p>
           ) : (
-            <p>Already registered? <button type="button" onClick={toggleAuthMode} className="toggle-btn">Sign in here</button></p>
+            <p>
+              Already registered?{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="toggle-btn"
+              >
+                Sign in here
+              </button>
+            </p>
           )}
         </div>
       </div>
