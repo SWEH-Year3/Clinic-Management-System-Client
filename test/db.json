@@ -50,6 +50,13 @@
       "password": "testo123456",
       "role": "patient",
       "isLoggedIn": true
+    },
+    {
+      "id": "144c",
+      "email": "ahmed@mail.com",
+      "password": "ahmed123456",
+      "role": "patient",
+      "isLoggedIn": true
     }
   ],
   "register": [

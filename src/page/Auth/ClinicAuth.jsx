@@ -136,7 +136,7 @@ const ClinicAuth = () => {
 
   return (
     <div className="auth-container">
-      <div className="medical-background"></div>
+          <div className="medical-background"></div>
       <div className="auth-content">
         <div className="title-container">
           <h1>Wellness</h1>
@@ -289,10 +289,10 @@ const ClinicAuth = () => {
 
           <button type="submit" className="submit-btn">
             {isSignIn ? "Sign In" : "Create Account"}
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={isSignIn ? faSignInAlt : faUserPlus}
               className="btn-icon"
-            />
+            /> */}
           </button>
         </form>
 
