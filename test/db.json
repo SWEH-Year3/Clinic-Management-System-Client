@@ -59,35 +59,45 @@
             "name":"Dr. John Doe",
             "specialty":"Cardiology",
             "price":100.50,
-            "phone":"123-456-7890"
+            "phone":"123-456-7890",
+          "profilePhoto": "https://randomuser.me/api/portraits/men/1.jpg"
+
         },
         {
             "id":2,
             "name":"Dr. Jane Smith",
             "specialty":"Dermatology",
             "price":75.25,
-            "phone":"987-654-3210"
+            "phone":"987-654-3210",
+          "profilePhoto": "https://randomuser.me/api/portraits/men/1.jpg"
+
         },
         {
             "id":3,
             "name":"Dr. Michael Johnson",
             "specialty":"Orthopedics",
             "price":150.75,
-            "phone":"555-555-5555"
+            "phone":"555-555-5555",
+          "profilePhoto": "https://randomuser.me/api/portraits/men/1.jpg"
+
         },
         {
             "id":4,
             "name":"Dr. Emily Davis",
             "specialty":"Gynecology",
             "price":200.00,
-            "phone":"111-222-3333"
+            "phone":"111-222-3333",
+          "profilePhoto": "https://randomuser.me/api/portraits/men/1.jpg"
+
         },
         {
             "id":5,
             "name":"Dr. Robert Wilson",
             "specialty":"Pediatrics",
             "price":100.50,
-            "phone":"444-555-6666"
+            "phone":"444-555-6666",
+          "profilePhoto": "https://randomuser.me/api/portraits/men/1.jpg"
+
         }
     ],
     "patients":[
