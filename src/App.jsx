@@ -38,6 +38,6 @@ const UnderDevelopment = () => {
     return (<h1 className="alert alert-info text-center m-5">Under Development</h1>);
 }
 const NotFound = () => {
-    return (<h1 className='alert alert-danger text-center m-5'>Not Found <strong>404</strong></h1>);
+    return (<h1 className='alert alert-danger text-center m-5 '>Not Found <strong>404</strong></h1>);
 }
 
