@@ -1,9 +1,9 @@
-import React from 'react';
-import './Doctors.css';
-import DoctorCard from '@/components/Admin/DoctorCard';
-import EditDoctorModal from '@/components/Admin/EditDoctorModal';
-import AddDoctorForm from '@/components/Admin/AddDocForm';
-import { Plus } from 'lucide-react';
+import React from "react";
+import "./Doctors.css";
+import DoctorCard from "@/page/Admin/DoctorCard";
+import EditDoctorModal from "@/page/Admin/EditDoctorModal";
+import AddDoctorForm from "@/page/Admin/AddDocForm";
+import { Plus } from "lucide-react";
 
 class DoctorsPage extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class DoctorsPage extends React.Component {
       currentDoctor: null,
       isAddFormOpen: false,
       isLoading: true,
-      error: null
+      error: null,
     };
   }
 
@@ -25,19 +25,22 @@ class DoctorsPage extends React.Component {
   fetchDoctors = async () => {
     try {
       this.setState({ isLoading: true, error: null });
-      const response = await fetch('/test/db.json');
+      const response = await fetch("http://localhost:3000/doctors");
       if (!response.ok) {
-        throw new Error('Failed to fetch doctors data');
+        throw new Error("Failed to fetch doctors data");
       }
-      const data = await response.json();
-      this.setState({ 
-        doctors: data.doctors || [],
-        isLoading: false 
-      });
+        await response.json().then((v) => {
+            // console.log(v);
+            this.setState({
+              doctors: v || [],
+              isLoading: false,
+            });
+        });
+        
     } catch (error) {
-      this.setState({ 
+      this.setState({
         error: error.message,
-        isLoading: false 
+        isLoading: false,
       });
     }
   };
@@ -49,23 +52,27 @@ class DoctorsPage extends React.Component {
   handleCloseAddForm = () => {
     this.setState({ isAddFormOpen: false });
   };
-  
+
+    // TO-DO: Post data to json-server endpoint 
   handleAddDoctor = async (newDoctor) => {
     try {
       this.setState({ isLoading: true });
 
-      this.setState(prevState => ({
-        doctors: [...prevState.doctors, {
-          ...newDoctor,
-          id: Math.max(...prevState.doctors.map(d => d.id), 0) + 1
-        }],
+      this.setState((prevState) => ({
+        doctors: [
+          ...prevState.doctors,
+          {
+            ...newDoctor,
+            id: Math.max(...prevState.doctors.map((d) => d.id), 0) + 1,
+          },
+        ],
         isAddFormOpen: false,
-        isLoading: false
+        isLoading: false,
       }));
     } catch (error) {
-      this.setState({ 
-        error: 'Failed to add doctor',
-        isLoading: false 
+      this.setState({
+        error: "Failed to add doctor",
+        isLoading: false,
       });
     }
   };
@@ -73,14 +80,14 @@ class DoctorsPage extends React.Component {
   handleDeleteDoctor = async (id) => {
     try {
       this.setState({ isLoading: true });
-      this.setState(prevState => ({
-        doctors: prevState.doctors.filter(doctor => doctor.id !== id),
-        isLoading: false
+      this.setState((prevState) => ({
+        doctors: prevState.doctors.filter((doctor) => doctor.id !== id),
+        isLoading: false,
       }));
     } catch (error) {
-      this.setState({ 
-        error: 'Failed to delete doctor',
-        isLoading: false 
+      this.setState({
+        error: "Failed to delete doctor",
+        isLoading: false,
       });
     }
   };
@@ -88,38 +95,45 @@ class DoctorsPage extends React.Component {
   handleEditDoctor = (doctor) => {
     this.setState({
       isEditModalOpen: true,
-      currentDoctor: doctor
+      currentDoctor: doctor,
     });
   };
 
   handleCloseModal = () => {
     this.setState({
       isEditModalOpen: false,
-      currentDoctor: null
+      currentDoctor: null,
     });
   };
 
   handleSaveDoctor = async (updatedDoctor) => {
     try {
       this.setState({ isLoading: true });
-      this.setState(prevState => ({
-        doctors: prevState.doctors.map(doctor => 
+      this.setState((prevState) => ({
+        doctors: prevState.doctors.map((doctor) =>
           doctor.id === updatedDoctor.id ? updatedDoctor : doctor
         ),
         isEditModalOpen: false,
         currentDoctor: null,
-        isLoading: false
+        isLoading: false,
       }));
     } catch (error) {
-      this.setState({ 
-        error: 'Failed to update doctor',
-        isLoading: false 
+      this.setState({
+        error: "Failed to update doctor",
+        isLoading: false,
       });
     }
   };
 
   render() {
-    const { doctors, isAddFormOpen, isEditModalOpen, currentDoctor, isLoading, error } = this.state;
+    const {
+      doctors,
+      isAddFormOpen,
+      isEditModalOpen,
+      currentDoctor,
+      isLoading,
+      error,
+    } = this.state;
 
     if (isLoading) {
       return (
@@ -133,10 +147,7 @@ class DoctorsPage extends React.Component {
       return (
         <div className="error-container">
           <p>{error}</p>
-          <button 
-            onClick={this.fetchDoctors}
-            className="retry-btn"
-          >
+          <button onClick={this.fetchDoctors} className="retry-btn">
             Retry
           </button>
         </div>
@@ -146,18 +157,15 @@ class DoctorsPage extends React.Component {
     return (
       <div className="doctors-page">
         <h1 className="page-title">Doctors Management</h1>
-        <button 
-          onClick={this.handleOpenAddForm}
-          className="add-doctor-btn"
-        >
+        <button onClick={this.handleOpenAddForm} className="add-doctor-btn">
           <Plus size={18} />
           <span>Add Doctor</span>
         </button>
 
         <div className="doctors-grid">
           {doctors.length > 0 ? (
-            doctors.map(doctor => (
-              <DoctorCard 
+            doctors.map((doctor) => (
+              <DoctorCard
                 key={doctor.id}
                 doctor={doctor}
                 onDelete={this.handleDeleteDoctor}
@@ -165,9 +173,7 @@ class DoctorsPage extends React.Component {
               />
             ))
           ) : (
-            <div className="no-doctors">
-              No doctors found
-            </div>
+            <div className="no-doctors">No doctors found</div>
           )}
         </div>
 
@@ -178,7 +184,7 @@ class DoctorsPage extends React.Component {
             onSave={this.handleSaveDoctor}
           />
         )}
-        
+
         <AddDoctorForm
           isOpen={isAddFormOpen}
           onClose={this.handleCloseAddForm}

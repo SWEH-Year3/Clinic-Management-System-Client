@@ -24,27 +24,27 @@ const renderCenterLinks = () => {
     switch (user.role) {
     case "doctor":
         return (
-        <>
+          <>
             <NavItem to="/" label="Home" />
             <NavItem to="/about" label="About" />
-            <NavItem to="/appointments" label="Appointments" />
-        </>
+            <NavItem to={`/${user.role}/appointments`} label="Appointments" />
+          </>
         );
     case "admin":
         return (
-        <>
-            <NavItem to="/dashboard" label="Dashboard" />
-            <NavItem to="/doctors" label="Doctor List" />
-            <NavItem to="/appointments" label="Appointments" />
-        </>
+          <>
+            <NavItem to={`/${user.role}/dashboard`} label="Dashboard" />
+            <NavItem to={`/${user.role}/doctors`} label="Doctor List" />
+            <NavItem to={`/${user.role}/appointments`} label="Appointments"/>
+          </>
         );
     case "patient":
         return (
         <>
             <NavItem to="/" label="Home" />
-            <NavItem to="/doctors" label="Doctor List" />
+            <NavItem to={`/${user.role}/doctors`}   label="Doctor List" />
             <NavItem to="/about" label="About" />
-            <NavItem to="/appointments" label="Appointments" />
+            <NavItem to={`/${user.role}/appointments`} label="Appointments" />
         </>
         );
     default:

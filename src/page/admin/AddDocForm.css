@@ -39,7 +39,7 @@
     z-index: 10;
   }
   
-  .profile-photo-container {
+  .profile-photo-container-add {
     height: 160px;
     display: flex;
     justify-content: center;
@@ -48,7 +48,7 @@
     margin-bottom: 1rem;
   }
   
-  .profile-photo-placeholder {
+  .profile-photo-placeholder-add {
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -58,7 +58,9 @@
     align-items: center;
     color: #1a2d42;
   }
-  
+  .profile-photo-placeholder-add img{
+    border-radius: 100%;
+  }
   .doctor-name-input {
     width: 100%;
     padding: 0.5rem;
