@@ -7,6 +7,8 @@ import HomePage from './page/HomePage/Home'
 import NavBar from './global/components/NavBar'
 import AboutPage from './page/AboutPage/AboutPage'
 import ClinicAuth from './page/Auth/ClinicAuth'
+import ChatPage from './global/layout/ChatPage'
+
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -25,7 +27,7 @@ function App() {
                 <Route path='/login' element={<ClinicAuth/>} />
                 <Route path='/register' element={<ClinicAuth/>} />
 
-                
+                <Route path="/chat/:id?" element={<ChatPage/>} />
                 <Route path='*' element={<NotFound/>} />
             </Routes>
         </BrowserRouter>

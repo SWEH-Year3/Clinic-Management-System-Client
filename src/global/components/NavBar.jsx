@@ -6,7 +6,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 
-
 const Navbar = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
@@ -65,7 +64,9 @@ const renderRightLinks = () => {
     return (
     <div className="d-flex align-items-center flex-wrap">
         <li className="nav-item d-flex align-items-center">
-            <FontAwesomeIcon icon={faCommentDots} style={{ width: "25px", height: "25px" }}/>
+            <Link to={"/chat"} style={{ textDecoration: "none" }}>
+                <FontAwesomeIcon icon={faCommentDots} style={{ width: "25px", height: "25px", color: "#1A2142" }}/>
+            </Link>
         </li>
         <li className="nav-item">
             <img src="/assets/avatar.png" alt="profile" style={{maxWidth:"40px", marginLeft: "10px", marginRight: "10px"}} />
