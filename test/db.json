@@ -57,6 +57,13 @@
       "password": "ahmed123456",
       "role": "patient",
       "isLoggedIn": true
+    },
+    {
+      "id": "6a40",
+      "email": "rola@mail.com",
+      "password": "rola123456",
+      "role": "patient",
+      "isLoggedIn": true
     }
   ],
   "register": [
@@ -78,32 +85,24 @@
   ],
   "doctors": [
     {
-      "id": "1",
-      "name": "Dr. John Doe",
-      "specialty": "Cardiology",
-      "price": 100.5,
-      "phone": "123-456-7890"
+      "name": "Dr. Jane mm",
+      "specialty": "Dermatolog",
+      "phone": "987-654-3210",
+      "id": "2"
     },
     {
-      "id": "2",
+      "id": "3",
       "name": "Dr. Jane Smith",
       "specialty": "Dermatology",
       "price": 75.25,
       "phone": "987-654-3210"
     },
     {
-      "id": "3",
-      "name": "Dr. Michael Johnson",
-      "specialty": "Orthopedics",
-      "price": 150.75,
-      "phone": "555-555-5555"
-    },
-    {
       "id": "4",
-      "name": "Dr. Emily Davis",
-      "specialty": "Gynecology",
-      "price": 200,
-      "phone": "111-222-3333"
+      "name": "Dr. Jane Smith",
+      "specialty": "Dermatology",
+      "price": 75.25,
+      "phone": "987-654-3210"
     },
     {
       "id": "5",
@@ -165,15 +164,6 @@
       "state": "Ongoing"
     },
     {
-      "id": "3",
-      "patientId": 12,
-      "doctorId": 3,
-      "specialty": "Orthopedics",
-      "date": "2023-05-03",
-      "time": "12:00 PM",
-      "state": "Closed"
-    },
-    {
       "id": "4",
       "patientId": 13,
       "doctorId": 4,
@@ -183,13 +173,11 @@
       "state": "pending"
     },
     {
-      "id": "5",
-      "patientId": 14,
-      "doctorId": 5,
-      "specialty": "Pediatrics",
-      "date": "2023-05-05",
-      "time": "2:00 PM",
-      "state": "Ongoing"
+      "id": "3a4d",
+      "date": "2025-04-28",
+      "time": "16:01",
+      "doctorId": "2",
+      "doctorName": "Dr. Jane mm"
     }
   ],
   "prescriptions": [

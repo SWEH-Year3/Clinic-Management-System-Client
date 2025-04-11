@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, User } from 'lucide-react';
 import './AddDocForm.css';
-import doctorIcon from '../../../public/assets/doctor.svg';
+import doctorIcon from '@/../public/assets/doctor.svg';
 const AddDocForm = ({ isOpen, onClose, onAdd }) => {
   const [newDoctor, setNewDoctor] = React.useState({
     name: '',
@@ -31,7 +31,7 @@ const AddDocForm = ({ isOpen, onClose, onAdd }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" >
       <div className="modal-card-container">
         <div className="doctor-card modal-card">
           <button className="close-btn" onClick={onClose}>

@@ -1,22 +1,11 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toaster } from "../../components/ui/toaster";
 import { toast } from "react-toastify";
 import { useAuth } from "../../Context/AuthContext";
 import "../Auth/ClinicAuth.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  faUser,
-  faEnvelope,
-  faLock,
-  faUserTag,
-  faIdCard,
-  faStethoscope,
-  faSignInAlt,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import {faUser,faEnvelope,faLock,faIdCard,faStethoscope} from "@fortawesome/free-solid-svg-icons";
 
 const ClinicAuth = () => {
   const location = useLocation();
@@ -50,12 +39,6 @@ const ClinicAuth = () => {
     e.preventDefault();
 
     if (!isSignIn && formData.password !== formData.confirmPassword) {
-      //   toaster.create({
-      //     type: 'error',
-      //     title: 'Password mismatch',
-      //     description: 'Passwords do not match.',
-      //     meta: { closable: true }
-      //   });
       toast.error("Passwords do not match.");
       return;
     }
@@ -77,15 +60,7 @@ const ClinicAuth = () => {
         (u) => u.email === email && u.password === password
       );
       console.log(matchedUser);
-      // console.log(response.data)
-      // console.log(formData)
       if (!matchedUser) {
-        // toaster.create({
-        //   type: 'error',
-        //   title: 'Invalid credentials',
-        //   description: 'Username or password is incorrect.',
-        //   meta: { closable: true }
-        // });
         toast.error("Username or password is incorrect.");
         return;
       }
@@ -97,7 +72,7 @@ const ClinicAuth = () => {
           matchedUser.specialization = formData.specialization;
         }
       }
-      // To-Do: Enable to set user in context
+      // To-Do: Enable to set user in context-----> DONE
       setUser({
         email: matchedUser.email,
         id: matchedUser.id,
@@ -106,24 +81,18 @@ const ClinicAuth = () => {
         role: matchedUser.role,
         name: matchedUser.name,
       });
-      //   toaster.create({
-      //     type: 'success',
-      //     title: `Welcome ${matchedUser.name}`,
-      //     description: `${isSignIn ? 'Login' : 'Registration'} successful!`,
-      //     meta: { closable: true }
-      //   });
+      localStorage.setItem("user", JSON.stringify(matchedUser));
 
-      // To-Do: store user in local storage
-      // To-Do: navigate user to its home page
+      // To-Do: store user in local storage -----> DONE
+      // To-Do: navigate user to its home page -----> DONE
       toast.success(`${isSignIn ? "Login" : "Registration"} successful!`);
-      // eslint-disable-next-line no-unused-vars
+      if (matchedUser.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/"); 
+      }
+    
     } catch (error) {
-      //   toaster.create({
-      //     type: 'error',
-      //     title: isSignIn ? 'Login failed' : 'Registration failed',
-      //     description: `Something went wrong while ${isSignIn ? 'logging in' : 'registering'}.`,
-      //     meta: { closable: true }
-      //   });
       toast.error(
         `Something went wrong while ${isSignIn ? "logging in" : "registering"}.`
       );
@@ -184,24 +153,6 @@ const ClinicAuth = () => {
                 />
                 <FontAwesomeIcon icon={faUser} className="input-icon" />
               </div>
-
-              {/* To-Do: To be Removed */}
-              {/* <div className="form-group">
-                <label htmlFor="userRole">I am a:</label>
-                <select
-                  id="userRole"
-                  name="userRole"
-                  value={userRole}
-                  onChange={handleRoleChange}
-                  className="form-select"
-                  required
-                >
-                  <option value="patient">Patient</option>
-                  <option value="doctor">Doctor</option>
-                  <option value="admin">Administrator</option>
-                </select>
-                <FontAwesomeIcon icon={faUserTag} className="input-icon" />
-              </div> */}
 
               {userRole === "doctor" && !isSignIn && (
                 <>
@@ -289,10 +240,7 @@ const ClinicAuth = () => {
 
           <button type="submit" className="submit-btn">
             {isSignIn ? "Sign In" : "Create Account"}
-            {/* <FontAwesomeIcon
-              icon={isSignIn ? faSignInAlt : faUserPlus}
-              className="btn-icon"
-            /> */}
+
           </button>
         </form>
 

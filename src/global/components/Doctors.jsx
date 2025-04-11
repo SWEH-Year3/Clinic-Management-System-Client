@@ -1,8 +1,8 @@
 import React from "react";
 import "./Doctors.css";
-import DoctorCard from "@/page/Admin/DoctorCard";
-import EditDoctorModal from "@/page/Admin/EditDoctorModal";
-import AddDoctorForm from "@/page/Admin/AddDocForm";
+import DoctorCard from "../components/DoctorCard";
+import EditDoctorModal from "../components/Admin/EditDoctorModal";
+import AddDoctorForm from "../components/Admin/AddDocForm";
 import { Plus } from "lucide-react";
 
 class DoctorsPage extends React.Component {
@@ -53,30 +53,37 @@ class DoctorsPage extends React.Component {
     this.setState({ isAddFormOpen: false });
   };
 
-    // TO-DO: Post data to json-server endpoint 
-  handleAddDoctor = async (newDoctor) => {
-    try {
-      this.setState({ isLoading: true });
+    // TO-DO: Post data to json-server endpoint -------> DONE
+    handleAddDoctor = async (newDoctor) => {
+      try {
+        this.setState({ isLoading: true });
 
-      this.setState((prevState) => ({
-        doctors: [
-          ...prevState.doctors,
-          {
-            ...newDoctor,
-            id: Math.max(...prevState.doctors.map((d) => d.id), 0) + 1,
+        const response = await fetch("http://localhost:3000/doctors", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        ],
-        isAddFormOpen: false,
-        isLoading: false,
-      }));
-    } catch (error) {
-      this.setState({
-        error: "Failed to add doctor",
-        isLoading: false,
-      });
-    }
-  };
-
+          body: JSON.stringify(newDoctor),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to add doctor");
+        }
+  
+        const addedDoctor = await response.json();
+  
+        this.setState((prevState) => ({
+          doctors: [...prevState.doctors, addedDoctor],
+          isAddFormOpen: false,
+          isLoading: false,
+        }));
+      } catch (error) {
+        this.setState({
+          error: error.message,
+          isLoading: false,
+        });
+      }
+    };
   handleDeleteDoctor = async (id) => {
     try {
       this.setState({ isLoading: true });

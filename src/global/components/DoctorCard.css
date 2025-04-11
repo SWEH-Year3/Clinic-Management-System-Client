@@ -28,9 +28,6 @@
   }
   
   .profile-photo {
-    /* object-fit: cover; */
-    /* border-radius: 50%; */
-    /* margin-top: 5px; */
     min-inline-size: 100%;
     block-size: auto;
   }
@@ -107,7 +104,10 @@
     background-color: #1a2d42;
     color: white;
   }
-  
+  .view-btn{
+    background-color: #1a2d42;
+    color: white;
+  }
   .split-button .delete-btn {
     background-color:white;
     color: #1a2d42;
