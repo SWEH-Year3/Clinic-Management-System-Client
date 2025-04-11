@@ -9,7 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   faUser,
-  faEnvelope,
+    faEnvelope,
+  faPhone,
   faLock,
   faUserTag,
   faIdCard,
@@ -30,6 +31,7 @@ const ClinicAuth = () => {
     confirmPassword: "",
     licenseNumber: "",
     specialization: "",
+    phone: ""
   });
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const ClinicAuth = () => {
       setIsSignIn(false);
     }
   }, [location.pathname]);
-  const { setUser } = useAuth();
+  const { setUser, user } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,61 +63,83 @@ const ClinicAuth = () => {
     }
 
     try {
-      const { email, password } = formData;
+      const { email, password, fullName, phone } = formData;
       //   const username = email.split('@')[0];
 
-      if (!isSignIn) {
-        await axios.post("http://localhost:3000/login-return", {
-          email,
-          password,
-          role: "patient",
-          isLoggedIn: true,
+        if (!isSignIn) {
+          // TODO: Remove After Test
+        // await axios.post("http://localhost:3000/login-return", {
+        //   email,
+        //   password,
+        //   role: "patient",
+        //   isLoggedIn: true,
+        // });
+        await axios.post("https://localhost:7195/api/Auth/Register", {
+            email,
+            name: fullName,
+            password,
+          phone,
         });
       }
-      const response = await axios.get("http://localhost:3000/login-return");
-      const matchedUser = response.data.find(
-        (u) => u.email === email && u.password === password
-      );
-      console.log(matchedUser);
-      // console.log(response.data)
-      // console.log(formData)
-      if (!matchedUser) {
-        // toaster.create({
-        //   type: 'error',
-        //   title: 'Invalid credentials',
-        //   description: 'Username or password is incorrect.',
-        //   meta: { closable: true }
-        // });
-        toast.error("Username or password is incorrect.");
-        return;
-      }
+    //   const response = await axios.get("http://localhost:3000/login-return");
+        const response = await axios.post("https://localhost:7195/api/Auth/Login",
+            {
+                password,
+                email
+          }
+        ).then((data) =>
+        {
+            const matchedUser = data.data;
+            console.log(matchedUser);
+            
+            if (!matchedUser) {
+                toast.error("Username or password is incorrect.");
+                return;
+            }
 
-      if (!isSignIn) {
-        matchedUser.role = userRole;
-        if (userRole === "doctor") {
-          matchedUser.licenseNumber = formData.licenseNumber;
-          matchedUser.specialization = formData.specialization;
-        }
-      }
-      // To-Do: Enable to set user in context
-      setUser({
-        email: matchedUser.email,
-        id: matchedUser.id,
-        token: matchedUser.token,
-        isLoggedIn: matchedUser.isLoggedIn,
-        role: matchedUser.role,
-        name: matchedUser.name,
-      });
-      //   toaster.create({
-      //     type: 'success',
-      //     title: `Welcome ${matchedUser.name}`,
-      //     description: `${isSignIn ? 'Login' : 'Registration'} successful!`,
-      //     meta: { closable: true }
-      //   });
+            if (matchedUser) {
+              matchedUser.role = matchedUser.role.toLowerCase();
+              // To-Do: Enable to set user in context
+              setUser({
+                email: matchedUser.email,
+                id: matchedUser.id,
+                token: matchedUser.token,
+                isLoggedIn: matchedUser.isLoggedIN,
+                role: matchedUser.role,
+                name: matchedUser.name,
+              });
+              localStorage.setItem(
+                "user",
+                JSON.stringify({
+                  email: matchedUser.email,
+                  id: matchedUser.id,
+                  token: matchedUser.token,
+                  isLoggedIn: matchedUser.isLoggedIN,
+                  role: matchedUser.role,
+                  name: matchedUser.name,
+                })
+              );
+              console.log(localStorage.getItem("user"));
+              switch (matchedUser.role) {
+                case "admin":
+                  navigate("/admin/dashboard");
+                  break;
+                case "patient":
+                  navigate("/");
+                  break;
+                case "doctor":
+                  navigate("/");
+                  break;
+              }
+            }
+
+            
+      toast.success(`${isSignIn ? "Login" : "Registration"} successful!`);
+            
+    });
 
       // To-Do: store user in local storage
       // To-Do: navigate user to its home page
-      toast.success(`${isSignIn ? "Login" : "Registration"} successful!`);
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
       //   toaster.create({
@@ -136,7 +160,7 @@ const ClinicAuth = () => {
 
   return (
     <div className="auth-container">
-          <div className="medical-background"></div>
+      <div className="medical-background"></div>
       <div className="auth-content">
         <div className="title-container">
           <h1>Wellness</h1>
@@ -183,6 +207,20 @@ const ClinicAuth = () => {
                   }
                 />
                 <FontAwesomeIcon icon={faUser} className="input-icon" />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="phone">Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  placeholder="+20114545788"
+                />
+                <FontAwesomeIcon icon={faPhone} className="input-icon" />
               </div>
 
               {/* To-Do: To be Removed */}

@@ -71,7 +71,7 @@ const renderRightLinks = () => {
             <img src="/assets/avatar.png" alt="profile" style={{maxWidth:"40px", marginLeft: "10px", marginRight: "10px"}} />
         </li>
         <li className="nav-item">
-            <span className=" ms-2" style={{ fontWeight: "bold", color: "#1A2142"}} onClick={logout}>
+            <span className=" ms-2" style={{ fontWeight: "bold", color: "#1A2142", cursor: 'pointer'}} onClick={logout}>
             Logout
             </span>
         </li>
