@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
@@ -5,35 +6,49 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from 'react-router-dom';
 import { useRef } from 'react';
+import * as signalR from "@microsoft/signalr";
+import axios from "axios";
+import { useChat } from './../../../Context/ChatContext';
 
 
 const ChatRoom = () => {
+    const { chatUser } = useChat();
+    // const chatUserRef = useRef(chatUser);
+    useEffect(() => {
+        // chatUserRef.current = chatUser;
+        console.log("from ref ");
+        console.log(chatUser);
+    }, [chatUser]);
+
     const { id } = useParams();
-    const myID = 50;
+    const myID = "201";
 
-    const [message, setMessage] = useState({ senderID: myID, receiverID: id, content: "" });
-
+    const [message, setMessage] = useState({ senderID: myID, recieverID: id, content: "", recieverName: '', senderName: '' });
     
-    const [messages, setMessages] = useState([
-        { senderID: 50, receiverID: 4, content: "<p>Hey, how are you?</p>" },
-        { senderID: 4, receiverID: 50, content: "<p>I'm good, thanks! How about you?</p>" },
-        { senderID: 50, receiverID: 4, content: "<p>Doing great. Working on the new project.</p>" },
-        { senderID: 4, receiverID: 50, content: "<p>Nice! Let me know if you need any help.</p>" },
-    ]);
+    const [messages, setMessages] = useState([]);
     
+    const messagesEndRef = useRef(null);
+    const connectionRef = useRef(null);
     //every id change will bring messages
     useEffect(() => {
-        setMessage((prev) => ({ ...prev, receiverID: id }));
-    }, [id]);
-    
+        setMessage((prev) => ({
+            ...prev,
+            recieverID: chatUser.recieverID,
+            recieverName: chatUser.recieverName,
+            senderName: chatUser.name,
+            senderID: chatUser.id,
+        }));
+    }, [id,chatUser]);
+
     const sendMessage = () => {
         if (message.content.trim() !== "") {
-        setMessages([...messages, message]);
+        console.log(message);
+        connectionRef.current.invoke("SendMessage", message.senderID.toString(), message.recieverID.toString(), message.content, message.recieverName, message.senderName);
+        // setMessages([...messages, message]);
         setMessage({ ...message, content: "" }); // reset editor
         }
     };
 
-    const messagesEndRef = useRef(null);
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -41,7 +56,44 @@ const ChatRoom = () => {
         }
     }, [messages]);
     
+    useEffect(() => {
+        console.log("Room");
+        console.log(chatUser);
+        // Fetch old messages
+        axios.get(`https://localhost:7237/api/Messages/conversation?senderID=${myID}&recieverID=${id}`)
+            .then(res => setMessages(res.data));
 
+        // Setup SignalR connection
+        //update with hub link
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl(`https://localhost:7237/hubs/chat?senderID=${myID}&recieverID=${id}`, {withCredentials: true})
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("ReceiveMessage", msg => {
+            if ((msg.senderID === id && msg.recieverID === myID) || (msg.senderID === myID && msg.recieverID === id)) {
+                setMessages(prev => [...prev, msg]);
+            }
+        });
+
+        connection.on("ReceiveHistory", history => {
+            // console.log(history);
+            setMessages(history);
+        })
+
+        connection.start().then(async() => {
+            // console.log("SignalR Connected");
+        }).catch(console.error);
+        
+        connectionRef.current = connection;
+
+        return () => {
+            if(connection)
+                connection.stop();
+            setMessages([]);
+            setMessage({ ...message,recieverID: "", content: "", recieverName: '' });
+        };
+    }, [id, myID]);
 
     return (
         <div
@@ -65,23 +117,25 @@ const ChatRoom = () => {
             padding: "10px",
             }}
         >
-            {messages.map((msg, index) => {
-            const isSender = msg.senderID === myID;
+                {messages.map((msg, index) => {
+                // console.log(msg);
+                const isMyMessage = msg.senderID == myID  ;
+                // console.log(isMyMessage);
 
             return (
                 <div
                 key={index}
                 style={{
                     display: "flex",
-                    justifyContent: isSender ? "flex-end" : "flex-start",
+                    justifyContent: isMyMessage ? "flex-end" : "flex-start",
                     width: "100%",
                 }}
                 >
                 <div
                     style={{
                     maxWidth: "70%",
-                    backgroundColor: isSender ? "#1A2D42" : "white",
-                    color: isSender ? "white" : "black",
+                    backgroundColor: isMyMessage ? "#1A2D42" : "white",
+                    color: isMyMessage ? "white" : "black",
                     padding: "10px",
                     borderRadius: "10px",
                     margin: "5px",

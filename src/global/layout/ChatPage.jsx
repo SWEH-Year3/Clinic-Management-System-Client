@@ -1,15 +1,12 @@
 import React from 'react'
-import ChatList from '../components/Chat/ChatList'
-import ChatRoom from '../components/Chat/ChatRoom'
+import ChatList from './../components/Chat/ChatList'
+import ChatRoom from './../components/Chat/ChatRoom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from 'react-router-dom';
 
 const ChatPage = () => {
 
     const {id} = useParams();
-
-    
-
     return (
         <div>
         

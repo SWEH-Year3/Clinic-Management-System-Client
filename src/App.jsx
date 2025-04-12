@@ -8,6 +8,7 @@ import NavBar from './global/components/NavBar'
 import AboutPage from './page/AboutPage/AboutPage'
 import ClinicAuth from './page/Auth/ClinicAuth'
 import ChatPage from './global/layout/ChatPage'
+import { ChatProvider } from './Context/ChatContext'
 
 
 // To-Do: Add Route to each new page developed
@@ -20,7 +21,10 @@ function App() {
             <Routes>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/about' element={<AboutPage />} />
-
+                <Route
+                path="/chat/:id?"
+                element={<ChatProvider children={<ChatPage />} />}
+                />
                 {/* To-Do: Insert Component When Developed */}
                 {/* <Route path='/login' element={<h1 className='alert alert-info text-center m-5'>Under Development</h1>} />
                 <Route path='/register' element={<h1 className='alert alert-info text-center m-5'>Under Development</h1>} /> */}
