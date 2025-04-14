@@ -477,4 +477,30 @@
       "id": "1f36"
     }
   ]
+  ,"dashboard": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "specialty": "Cardiology",
+      "appointments": [50, 30, 45, 32, 28, 40, 55, 60, 65, 70, 75, 80]
+    },
+    {
+      "id": 2,
+      "name": "Ahmed",
+      "specialty": "Dermatology",
+      "appointments": [20, 10, 25, 15, 18, 12, 25, 30, 35, 40, 45, 50]
+    },
+    {
+      "id": 3,
+      "name": "Walaa",
+      "specialty": "Pediatrics",
+      "appointments": [43, 35, 40, 38, 36, 29, 40, 45, 50, 55, 60, 65]
+    },
+    {
+      "id": 4,
+      "name": "Mohamed",
+      "specialty": "Orthopedics",
+      "appointments": [39, 20, 30, 25, 35, 25, 30, 40, 45, 50, 55, 60]
+    }
+  ]
 }
