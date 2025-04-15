@@ -7,7 +7,7 @@ import HomePage from './page/HomePage/Home'
 import NavBar from './global/components/NavBar'
 import AboutPage from './page/AboutPage/AboutPage'
 import ClinicAuth from './page/Auth/ClinicAuth'
-import Prescription from './global/layout/Prescription'
+import Prescription from './global/components/Prescription'
 
 // To-Do: Add Route to each new page developed
 function App() {

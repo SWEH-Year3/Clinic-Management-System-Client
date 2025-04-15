@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -8,61 +7,67 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from "./../../Context/AuthContext";
 import axios from 'axios';
 
-
-    const Prescription = () => {
+const Prescription = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { id } = useParams();
 
-    const initialContent = '';
-    const initialMode = 'read';
     const role = user.role;
-    const [pres, setPres] = useState([]);
-    const [content, setContent] = useState(initialContent || '');
-    const [mode, setMode] = useState(initialMode); // 'add' | 'edit' | 'read'
     const isDoctor = role === 'doctor';
     const isPatient = role === 'patient';
 
-    const {id} = useParams();
-    
+    const [pres, setPres] = useState(null);
+    const [content, setContent] = useState('');
+    const [mode, setMode] = useState('read'); // 'add' | 'edit' | 'read'
+    const [initialContent, setInitialContent] = useState('');
+
+    // Load prescription
     useEffect(() => {
+        if (!id) return;
+
         axios.get(`http://localhost:3000/prescriptions/${id}`)
-        .then(response => {
-            //TODO
-            // console.warn(response.data);
+        .then((response) => {
             setPres(response.data);
+            setContent(response.data.content || '');
+            setInitialContent(response.data.content || '');
         })
-        .catch(error => {
-            console.warn(error);
+        .catch((error) => {
+            console.warn('Error loading prescription:', error);
         });
-    }, []);
-
-    useEffect(() => { 
-        if (id) {
-                console.log(pres);
-            setContent(pres.content);
-            } if(!id) {
-            setPres(
-                setContent(initialContent)
-            );
-            }
-    }, [pres.id]);
-
+    }, [id]);
 
     const handleSave = () => {
-        // TODO: Save content to backend or json-server
-        console.log('Prescription saved:', content);
-        setMode('read');
+        const updatedPrescription = {
+        ...pres,
+        content: content,
+        date: new Date().toISOString().split('T')[0],
+        };
+
+        axios.put(`http://localhost:3000/prescriptions/${id}`, updatedPrescription)
+        .then((response) => {
+            console.log('Prescription saved:', response.data);
+            setPres(response.data);
+            setInitialContent(response.data.content || '');
+            setMode('read');
+        })
+        .catch((error) => {
+            console.warn('Error saving prescription:', error);
+        });
     };
 
     const handleCancel = () => {
-        setContent(initialContent); // reset to original
+        setContent(initialContent);
         setMode('read');
     };
 
     return (
         <div className="container mt-4">
-        <button className="btn mb-3" style={{ backgroundColor: "white", color: "#1A2D42" , border: "2px solid #1A2D42" }} onClick={() => navigate(-1)}>
-        <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
+        <button
+            className="btn mb-3"
+            style={{ backgroundColor: "white", color: "#1A2D42", border: "2px solid #1A2D42" }}
+            onClick={() => navigate(-1)}
+        >
+            <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
             Back
         </button>
 
@@ -89,7 +94,7 @@ import axios from 'axios';
                 {mode === 'read' && (
                     <button
                     className="btn"
-                    style={{ backgroundColor: "#1A2D42", color: "White"}}
+                    style={{ backgroundColor: "#1A2D42", color: "white" }}
                     onClick={() => setMode(content ? 'edit' : 'add')}
                     >
                     Edit Prescription
@@ -97,17 +102,29 @@ import axios from 'axios';
                 )}
 
                 {mode === 'add' && (
-                    <button className="btn" style={{ backgroundColor: "#1A2D42", color: "White"}} onClick={handleSave}>
+                    <button
+                    className="btn"
+                    style={{ backgroundColor: "#1A2D42", color: "white" }}
+                    onClick={handleSave}
+                    >
                     Save Prescription
                     </button>
                 )}
 
                 {mode === 'edit' && (
                     <>
-                    <button className="btn" style={{ backgroundColor: "#1A2D42", color: "White"}} onClick={handleCancel}>
+                    <button
+                        className="btn"
+                        style={{ backgroundColor: "#1A2D42", color: "white" }}
+                        onClick={handleCancel}
+                    >
                         Cancel
                     </button>
-                    <button className="btn" style={{ backgroundColor: "white", color: "#1A2D42", border: "2px solid #1A2D42"}} onClick={handleSave}>
+                    <button
+                        className="btn"
+                        style={{ backgroundColor: "white", color: "#1A2D42", border: "2px solid #1A2D42" }}
+                        onClick={handleSave}
+                    >
                         Save
                     </button>
                     </>
@@ -117,7 +134,7 @@ import axios from 'axios';
             </div>
 
             <div className="card-footer text-muted text-end">
-            Modified At: {pres.date}
+            Modified At: {pres?.date}
             </div>
         </div>
         </div>
