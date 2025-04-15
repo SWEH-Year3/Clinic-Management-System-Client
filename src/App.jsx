@@ -7,6 +7,7 @@ import HomePage from './page/HomePage/Home'
 import NavBar from './global/components/NavBar'
 import AboutPage from './page/AboutPage/AboutPage'
 import ClinicAuth from './page/Auth/ClinicAuth'
+import Prescription from './global/layout/Prescription'
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -24,6 +25,7 @@ function App() {
                 <Route path='/register' element={<h1 className='alert alert-info text-center m-5'>Under Development</h1>} /> */}
                 <Route path='/login' element={<ClinicAuth/>} />
                 <Route path='/register' element={<ClinicAuth/>} />
+                <Route path='/prescriptions/:id?' element={<Prescription/>} />
 
                 
                 <Route path='*' element={<NotFound/>} />
