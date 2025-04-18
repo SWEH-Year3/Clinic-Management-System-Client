@@ -85,10 +85,12 @@
   ],
   "doctors": [
     {
-      "name": "Dr. Jane mm",
-      "specialty": "Dermatolog",
-      "phone": "987-654-3210",
-      "id": "2"
+      "name": "Dr. Jane smith",
+      "specialty": "Dermatology",
+      "phone": "987-654-321",
+      "id": "2",
+      "price": 544,
+      "email": ""
     },
     {
       "id": "3",
@@ -156,12 +158,14 @@
     },
     {
       "id": "2",
-      "patientId": 11,
+      "patientId": "3",
       "doctorId": 2,
       "specialty": "Dermatology",
       "date": "2023-05-02",
       "time": "11:00 AM",
-      "state": "Ongoing"
+      "state": "Ongoing",
+      "patientName": "patient",
+      "status": "pending"
     },
     {
       "id": "4",
@@ -463,6 +467,84 @@
       "doctorId": 30,
       "TotalAppointment": 3,
       "id": "1f36"
+    }
+  ],
+  "dashboard": [
+    {
+      "id": "1",
+      "name": "Alice",
+      "specialty": "Cardiology",
+      "appointments": [
+        50,
+        30,
+        45,
+        32,
+        28,
+        40,
+        55,
+        60,
+        65,
+        70,
+        75,
+        80
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Ahmed",
+      "specialty": "Dermatology",
+      "appointments": [
+        20,
+        10,
+        25,
+        15,
+        18,
+        12,
+        25,
+        30,
+        35,
+        40,
+        45,
+        50
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Walaa",
+      "specialty": "Pediatrics",
+      "appointments": [
+        43,
+        35,
+        40,
+        38,
+        36,
+        29,
+        40,
+        45,
+        50,
+        55,
+        60,
+        65
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Mohamed",
+      "specialty": "Orthopedics",
+      "appointments": [
+        39,
+        20,
+        30,
+        25,
+        35,
+        25,
+        30,
+        40,
+        45,
+        50,
+        55,
+        60
+      ]
     }
   ]
 }

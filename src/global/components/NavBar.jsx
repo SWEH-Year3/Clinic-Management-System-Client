@@ -68,7 +68,18 @@ const renderRightLinks = () => {
             <FontAwesomeIcon icon={faCommentDots} style={{ width: "25px", height: "25px" }}/>
         </li>
         <li className="nav-item">
-            <img src="/assets/avatar.png" alt="profile" style={{maxWidth:"40px", marginLeft: "10px", marginRight: "10px"}} />
+        <Link to="/profile">
+        <img 
+            src="/assets/avatar.png" 
+            alt="profile" 
+            style={{
+                maxWidth: "40px", 
+                marginLeft: "10px", 
+                marginRight: "10px",
+                cursor: "pointer" // Adds pointer cursor on hover
+            }} 
+        />
+    </Link>
         </li>
         <li className="nav-item">
             <span className=" ms-2" style={{ fontWeight: "bold", color: "#1A2142"}} onClick={logout}>

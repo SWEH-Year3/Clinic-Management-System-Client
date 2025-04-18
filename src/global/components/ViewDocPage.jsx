@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import EditDoctorModal from '../components/Admin/EditDoctorModal'; 
+import DoctorCard from './DoctorCard';
 
 const ViewDocPage = () => {
   const { state } = useLocation();
@@ -22,6 +23,9 @@ const ViewDocPage = () => {
     doctorId: doctor?.id || '',
     doctorName: doctor?.name || '',
   });
+  const [bookingStatus, setBookingStatus] = useState({});
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [currentAppointment, setCurrentAppointment] = useState(null);
 
   const user = JSON.parse(localStorage.getItem('user'));
   const role = user?.role;
@@ -68,6 +72,15 @@ const ViewDocPage = () => {
         if (doctor?.id) {
           const filtered = data.filter(appt => appt.doctorId.toString() === doctor.id.toString());
           setFilteredAppointments(filtered);
+          
+          // Initialize booking status
+          const statusMap = {};
+          filtered.forEach(appt => {
+            if (appt.patientId === user?.id) {
+              statusMap[appt.id] = appt.status || 'booked';
+            }
+          });
+          setBookingStatus(statusMap);
         }
       } catch (err) {
         setError(err.message);
@@ -77,7 +90,7 @@ const ViewDocPage = () => {
     };
 
     fetchAppointments();
-  }, [doctor?.id]);
+  }, [doctor?.id, user?.id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -154,6 +167,74 @@ const ViewDocPage = () => {
     setShowDeleteAppointmentModal(true);
   };
 
+  const handleBookAppointment = (appointment) => {
+    setCurrentAppointment(appointment);
+    setShowBookingModal(true);
+  };
+
+  const confirmBooking = async () => {
+    try {
+      setLoading(true);
+      
+      // 1. Update appointment status to pending
+      const updatedAppointment = {
+        ...currentAppointment,
+        patientId: user.id,
+        patientName: user.name,
+        status: "pending"
+      };
+
+      // 2. Send to backend
+      const response = await fetch(`http://localhost:3000/appointments/${currentAppointment.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedAppointment)
+      });
+
+      if (!response.ok) throw new Error('Failed to book appointment');
+
+      // 3. Create notification for admin
+      const notificationResponse = await fetch('http://localhost:3000/notifications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'booking_request',
+          appointmentId: currentAppointment.id,
+          doctorId: currentAppointment.doctorId,
+          doctorName: doctor.name,
+          patientId: user.id,
+          patientName: user.name,
+          date: currentAppointment.date,
+          time: currentAppointment.time,
+          read: false,
+          createdAt: new Date().toISOString()
+        })
+      });
+
+      if (!notificationResponse.ok) throw new Error('Failed to create notification');
+
+      // 4. Update UI
+      setBookingStatus(prev => ({
+        ...prev,
+        [currentAppointment.id]: "pending"
+      }));
+      
+      setShowBookingModal(false);
+      setCurrentAppointment(null);
+      
+      // Refresh appointments
+      const appointmentsResponse = await fetch('http://localhost:3000/appointments');
+      const data = await appointmentsResponse.json();
+      setAppointments(data);
+      setFilteredAppointments(data.filter(appt => appt.doctorId.toString() === doctor.id.toString()));
+      
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!doctor) {
     return (
       <Container className="mt-5">
@@ -163,8 +244,8 @@ const ViewDocPage = () => {
   }
 
   return (
-    <Container className="my-4">
-      <Row>
+    <Container className="my-4 d-flex" style={{ minHeight: '80vh' }}>
+      <Row className="align-items-center w-100"> 
         <Col md={4} className="mb-4">
           <div className="doctor-card">
             <div className="profile-photo-container">
@@ -179,15 +260,15 @@ const ViewDocPage = () => {
               <div className="doctor-info">
                 <h3 className="doctor-name">{doctor.name}</h3>
                 <div className="info-row">
-                  <span className="label">Specialty:</span>
+                  <span className="label">Specialty</span>
                   <span className="value">{doctor.specialty}</span>
                 </div>
                 <div className="info-row">
-                  <span className="label">Phone:</span>
+                  <span className="label">Phone</span>
                   <span className="value">{doctor.phone}</span>
                 </div>
                 <div className="info-row">
-                  <span className="label">Price:</span>
+                  <span className="label">Price</span>
                   <span className="value">{doctor.price || '$200/session'}</span>
                 </div>
               </div>
@@ -203,67 +284,90 @@ const ViewDocPage = () => {
         </Col>
 
         <Col md={8}>
-          <div className="bg-white p-4 rounded shadow-sm">
-            {loading ? (
-              <div className="text-center py-4">
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
-                <p className="mt-2">Loading appointments...</p>
-              </div>
-            ) : error ? (
-              <Alert variant="danger">{error}</Alert>
-            ) : filteredAppointments.length === 0 ? (
-              <Alert variant="info">No appointments found for this doctor</Alert>
-            ) : (
-              <Table striped bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>{role === 'patient' ? 'Book' : 'Actions'}</th>
+          {loading ? (
+            <div className="text-center py-4">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              <p className="mt-2">Loading appointments...</p>
+            </div>
+          ) : error ? (
+            <Alert variant="danger">{error}</Alert>
+          ) : filteredAppointments.length === 0 ? (
+            <Alert variant="info">No appointments found for this doctor</Alert>
+          ) : (
+            <Table striped hover responsive className="mt-5" style={{ width: '800px' }}>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>{role === 'patient' ? 'Book' : 'Actions'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAppointments.map((appointment) => (
+                  <tr key={appointment.id}>
+                    <td>{new Date(appointment.date).toLocaleDateString()}</td>
+                    <td>{appointment.time}</td>
+                    <td>
+                      {role === 'patient' ? (
+                        <button
+                          style={{
+                            backgroundColor: bookingStatus[appointment.id] ? "#6c757d" : "#1A2142",
+                            color: "white",
+                            border: `2px solid ${bookingStatus[appointment.id] ? "#6c757d" : "#1A2142"}`,
+                            padding: "5px 10px",
+                            borderRadius: "5px"
+                          }}
+                          onClick={() => handleBookAppointment(appointment)}
+                          disabled={bookingStatus[appointment.id]}
+                        >
+                          {bookingStatus[appointment.id] === "pending" ? "Pending" : 
+                           bookingStatus[appointment.id] === "approved" ? "Approved" : 
+                           bookingStatus[appointment.id] === "rejected" ? "Rejected" : "Book"}
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            style={{
+                              backgroundColor: "transparent",
+                              color: "#6c757d",
+                              border: "2px solid #6c757d",
+                              padding: "5px 10px",
+                              borderRadius: "5px",
+                              marginRight: "8px"
+                            }}
+                            onClick={() => navigate(`/appointments/${appointment.id}/edit`)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            style={{
+                              backgroundColor: "transparent",
+                              color: "#dc3545",
+                              border: "2px solid #dc3545",
+                              padding: "5px 10px",
+                              borderRadius: "5px"
+                            }}
+                            onClick={() => confirmDeleteAppointment(appointment)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {filteredAppointments.map((appointment) => (
-                    <tr key={appointment.id}>
-                      <td>{new Date(appointment.date).toLocaleDateString()}</td>
-                      <td>{appointment.time}</td>
-                      <td>
-                        {role === 'patient' ? (
-                          <Button variant="success" size="sm" onClick={() => alert('Booking logic here')}>
-                            Book
-                          </Button>
-                        ) : (
-                          <>
-                            <Button 
-                              variant="outline-secondary" 
-                              size="sm"
-                              onClick={() => navigate(`/appointments/${appointment.id}/edit`)}
-                              className="me-2"
-                            >
-                              Edit
-                            </Button>
-                            <Button 
-                              variant="outline-danger" 
-                              size="sm"
-                              onClick={() => confirmDeleteAppointment(appointment)}
-                            >
-                              Delete
-                            </Button>
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
-          </div>
+                ))}
+              </tbody>
+            </Table>
+          )}
 
           {role === 'admin' && (
-            <div className="text-end mt-3">
-              <Button variant="primary" onClick={() => setShowAddAppointmentModal(true)}>
+            <div className="text-center mt-3">
+              <Button
+                onClick={() => setShowAddAppointmentModal(true)}
+                style={{ width: '304px', height: '56px', backgroundColor: "#1A2142" }}
+              >
                 Add Time
               </Button>
             </div>
@@ -277,7 +381,7 @@ const ViewDocPage = () => {
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete Dr. {doctor.name}? This action cannot be undone.
+          Are you sure you want to delete {doctor.name}? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
@@ -339,6 +443,28 @@ const ViewDocPage = () => {
           <Button variant="secondary" onClick={() => setShowAddAppointmentModal(false)}>Cancel</Button>
           <Button variant="primary" onClick={handleAddAppointment} disabled={loading}>
             {loading ? 'Adding...' : 'Add Appointment'}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showBookingModal} onHide={() => setShowBookingModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {currentAppointment && (
+            <>
+              <p>You are about to book an appointment with {doctor.name}</p>
+              <p><strong>Date:</strong> {new Date(currentAppointment.date).toLocaleDateString()}</p>
+              <p><strong>Time:</strong> {currentAppointment.time}</p>
+              <p>This request will be sent to admin for approval.</p>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowBookingModal(false)}>Cancel</Button>
+          <Button variant="primary" onClick={confirmBooking} disabled={loading}>
+            {loading ? 'Processing...' : 'Confirm Booking'}
           </Button>
         </Modal.Footer>
       </Modal>

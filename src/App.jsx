@@ -8,10 +8,11 @@ import AboutPage from "./page/AboutPage/AboutPage";
 import ClinicAuth from "./page/Auth/ClinicAuth";
 import AdminLayout from "./page/Admin/AdminLayout";
 import DoctorsPage from "@/global/components/Doctors";
-import AdminDashboard from "@/global/components/Admin/Dashboard";
 import PatientLayout from "./page/patient/PatientLayout";
-import PatientDoctorsPage from "./page/patient/DoctorList";
 import ViewDocPage from "@/global/components/ViewDocPage";
+import Dashboard from "./page/admin/Dashboard/Dashboard";
+import ProfilePage from "./page/Profile/ProfilePage";
+
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -26,11 +27,12 @@ return (
         <Route path="/register" element={<ClinicAuth />} />
         
         <Route path="/:role/view-doctor/:id" element={<ViewDocPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
 
 
         <Route path="/admin/" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="doctors" element={<DoctorsPage />} />
             
 
@@ -44,7 +46,7 @@ return (
 
         <Route  path="/patient/" element={<PatientLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="doctors" element={<PatientDoctorsPage/>} />
+          <Route path="doctors" element={<DoctorsPage/>} />
         
 
         </Route>
