@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import ProfileCard from '@/global/components/ProfileCard';
+import ProfileCard from '../../global/components/ProfileCard';
 
 
 const ProfilePage = () => {

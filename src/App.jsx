@@ -7,13 +7,14 @@ import NavBar from "./global/components/NavBar";
 import AboutPage from "./page/AboutPage/AboutPage";
 import ClinicAuth from "./page/Auth/ClinicAuth";
 import AdminLayout from "./page/Admin/AdminLayout";
-import DoctorsPage from "@/global/components/Doctors";
+import DoctorsPage from "./global/components/Doctors";
 import PatientLayout from "./page/patient/PatientLayout";
-import ViewDocPage from "@/global/components/ViewDocPage";
+import ViewDocPage from "./global/components/ViewDocPage";
 import Dashboard from "./page/admin/Dashboard/Dashboard";
 import ProfilePage from "./page/Profile/ProfilePage";
-import Appointments from '@/global/components/Appointments';
-
+import Appointments from "./global/components/Appointments";
+import ChatPage from './global/layout/ChatPage'
+import { ChatProvider } from './Context/ChatContext'
 
 
 // To-Do: Add Route to each new page developed
@@ -25,8 +26,14 @@ return (
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route
+           path="/chat/:id?"
+           element={<ChatProvider children={<ChatPage />} />}
+        />
         <Route path="/login" element={<ClinicAuth />} />
         <Route path="/register" element={<ClinicAuth />} />
+        
+        <Route path='*' element={<NotFound/>} />
         <Route path='/appointments' element={<Appointments/>} />
         
         <Route path="/:role/view-doctor/:id" element={<ViewDocPage />} />
@@ -60,6 +67,7 @@ return (
     </Routes>
 </BrowserRouter>
 );
+
 }
 
 export default App;

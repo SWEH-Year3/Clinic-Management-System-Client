@@ -12,7 +12,7 @@ const DoctorCard = ({ doctor }) => {
   };
 
   const handleChatWithDoctor = () => {
-    navigate(`/${user?.role}/chat/${doctor.id}`);
+    navigate(`/chat/${doctor.id}`);
   };
 
   const renderActions = () => {
