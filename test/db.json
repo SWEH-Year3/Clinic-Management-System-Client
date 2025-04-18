@@ -85,12 +85,11 @@
   ],
   "doctors": [
     {
-      "name": "Dr. Jane smith",
+      "name": "Dr. Jane wan",
       "specialty": "Dermatology",
+      "email": "",
       "phone": "987-654-321",
-      "id": "2",
-      "price": 544,
-      "email": ""
+      "id": "2"
     },
     {
       "id": "3",
@@ -149,39 +148,82 @@
   "appointments": [
     {
       "id": "1",
-      "patientId": 10,
-      "doctorId": 1,
-      "specialty": "Cardiology",
-      "date": "2023-05-01",
-      "time": "10:00 AM",
-      "state": "pending"
-    },
-    {
-      "id": "2",
       "patientId": "3",
       "doctorId": 2,
       "specialty": "Dermatology",
       "date": "2023-05-02",
-      "time": "11:00 AM",
-      "state": "Ongoing",
+      "time": "16:17",
+      "state": "pending",
+      "doctorName": "Dr. Jane mm",
       "patientName": "patient",
+      "patientEmail": "patient@mail.com"
+    },
+    {
+      "id": "2",
+      "patientId": 11,
+      "doctorId": 2,
+      "specialty": "Dermatology",
+      "date": "2023-05-02",
+      "time": "16:15",
+      "state": "Ongoing"
+    },
+    {
+      "id": "3",
+      "patientId": 12,
+      "doctorId": 3,
+      "specialty": "Orthopedics",
+      "date": "2023-05-03",
+      "time": "12:00 PM",
+      "state": "Closed"
+    },
+    {
+      "id": "7",
+      "patientId": 13,
+      "doctorId": 3,
+      "specialty": "Dermatology",
+      "date": "2023-05-09",
+      "time": "4:15 PM",
+      "state": "ongoing",
+      "doctorName": "Dr. Jane Smith",
+      "patientName": "Emily Davis",
+      "patientPhone": "111-222-3333",
+      "patientEmail": "emilydavis@mail"
+    },
+    {
+      "id": "8",
+      "patientId": "3",
+      "doctorId": 2,
+      "specialty": "Dermatology",
+      "date": "2023-05-10",
+      "time": "16:14",
+      "state": "closed",
+      "doctorName": "Dr. Jane mm",
+      "patientName": "patient",
+      "patientPhone": "555-555-5555",
+      "patientEmail": "michaeljohnson@mail",
       "status": "pending"
     },
     {
-      "id": "4",
-      "patientId": 13,
+      "id": "9",
+      "patientId": 11,
       "doctorId": 4,
       "specialty": "Gynecology",
-      "date": "2023-05-04",
-      "time": "1:00 PM",
-      "state": "pending"
+      "date": "2023-05-08",
+      "time": "11:30 AM",
+      "state": "open",
+      "doctorName": "Dr. Jane Smith",
+      "patientName": "Jane Smith",
+      "patientPhone": "987-654-3210",
+      "patientEmail": "janesmith@mail"
     },
     {
-      "id": "3a4d",
-      "date": "2025-04-28",
-      "time": "16:01",
-      "doctorId": "2",
-      "doctorName": "Dr. Jane mm"
+      "id": "5",
+      "patientId": 14,
+      "doctorId": 5,
+      "specialty": "Pediatrics",
+      "date": "2023-05-05",
+      "time": "2:00 PM",
+      "state": "Ongoing"
     }
   ],
   "prescriptions": [

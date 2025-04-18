@@ -12,6 +12,8 @@ import PatientLayout from "./page/patient/PatientLayout";
 import ViewDocPage from "@/global/components/ViewDocPage";
 import Dashboard from "./page/admin/Dashboard/Dashboard";
 import ProfilePage from "./page/Profile/ProfilePage";
+import Appointments from '@/global/components/Appointments';
+
 
 
 // To-Do: Add Route to each new page developed
@@ -25,9 +27,11 @@ return (
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<ClinicAuth />} />
         <Route path="/register" element={<ClinicAuth />} />
+        <Route path='/appointments' element={<Appointments/>} />
         
         <Route path="/:role/view-doctor/:id" element={<ViewDocPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+
 
 
         <Route path="/admin/" element={<AdminLayout />}>
@@ -36,8 +40,9 @@ return (
             <Route path="doctors" element={<DoctorsPage />} />
             
 
-            <Route path="appointments" element={<UnderDevelopment />} />
-            {/* <Route path="appointments" element={<AppointmentsPage />} /> */}
+
+            {/* <Route path="appointments" element={<UnderDevelopment />} /> */}
+          
 
             <Route path="reports" element={<UnderDevelopment />} />
             {/* <Route path="reports" element={<ReportsPage />} /> */}
