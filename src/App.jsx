@@ -1,4 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { ToastContainer } from "react-toastify";
 
@@ -13,6 +15,7 @@ import PatientLayout from "./page/patient/PatientLayout";
 import PatientDoctorsPage from "./page/patient/DoctorList";
 import ViewDocPage from "@/global/components/ViewDocPage";
 import Prescription from './global/components/Prescription'
+import Appointments from './global/components/Appointments'
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -36,7 +39,9 @@ return (
             
 
             <Route path="appointments" element={<UnderDevelopment />} />
-            {/* <Route path="appointments" element={<AppointmentsPage />} /> */}
+                {/* <Route path="appointments" element={<AppointmentsPage />} /> */}
+                <Route path='/appointments' element={<Appointments />} />
+
 
             <Route path="reports" element={<UnderDevelopment />} />
             {/* <Route path="reports" element={<ReportsPage />} /> */}
