@@ -12,7 +12,7 @@ const DoctorCard = ({ doctor }) => {
   };
 
   const handleChatWithDoctor = () => {
-    navigate(`/${user?.role}/chat/${doctor.id}`);
+    navigate(`/chat/${doctor.id}`);
   };
 
   const renderActions = () => {
@@ -55,15 +55,15 @@ const DoctorCard = ({ doctor }) => {
         <div className="doctor-info">
           <h3 className="doctor-name">{doctor.name}</h3>
           <div className="info-row">
-            <span className="label">Specialty:</span>
+            <span className="label">Specialty</span>
             <span className="value">{doctor.specialty}</span>
           </div>
           <div className="info-row">
-            <span className="label">Phone:</span>
+            <span className="label">Phone</span>
             <span className="value">{doctor.phone}</span>
           </div>
           <div className="info-row">
-            <span className="label">Price:</span>
+            <span className="label">Price</span>
             <span className="value">{doctor.price || '$200/session'}</span>
           </div>
         </div>

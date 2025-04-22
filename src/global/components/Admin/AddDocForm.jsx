@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, User } from 'lucide-react';
 import './AddDocForm.css';
-import doctorIcon from '@/../public/assets/doctor.svg';
+import doctorIcon from '../../../../public/assets/doctor.svg';
 const AddDocForm = ({ isOpen, onClose, onAdd }) => {
   const [newDoctor, setNewDoctor] = React.useState({
     name: '',

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Container, Row, Col, Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import EditDoctorModal from '../components/Admin/EditDoctorModal'; 
+import EditAppointmentModal from '../components/Admin/EditAppointmentModal';
+
 
 const ViewDocPage = () => {
   const { state } = useLocation();
@@ -16,6 +19,8 @@ const ViewDocPage = () => {
   const [appointmentToDelete, setAppointmentToDelete] = useState(null);
   const [showAddAppointmentModal, setShowAddAppointmentModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showEditAppointmentModal, setShowEditAppointmentModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [newAppointment, setNewAppointment] = useState({
     date: '',
     time: '',
@@ -148,10 +153,78 @@ const ViewDocPage = () => {
       setShowDeleteAppointmentModal(false);
     }
   };
-
+  const handleSaveAppointment = async (updatedAppointment) => {
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        `http://localhost:3000/appointments/${updatedAppointment.id}`,
+        updatedAppointment,
+        {
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+  
+      const savedAppointment = response.data;
+      
+      setAppointments(prev => 
+        prev.map(appt => 
+          appt.id === savedAppointment.id ? savedAppointment : appt
+        )
+      );
+      
+      setFilteredAppointments(prev => 
+        prev.map(appt => 
+          appt.id === savedAppointment.id ? savedAppointment : appt
+        )
+      );
+      
+      setShowEditAppointmentModal(false);
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || 'Failed to update appointment');
+    } finally {
+      setLoading(false);
+    }
+  };
   const confirmDeleteAppointment = (appointment) => {
     setAppointmentToDelete(appointment);
     setShowDeleteAppointmentModal(true);
+  };
+  const handleBookAppointment = async (appointment) => {
+    try {
+      setLoading(true);
+      const response = await axios.put(
+        `http://localhost:3000/appointments/${appointment.id}`,
+        {
+          ...appointment,
+          state: 'pending',
+          patientId: user.id,
+          patientName: user.name,
+          patientPhone: user.phone,
+          patientEmail: user.email
+        }
+      );
+  
+      const updatedAppointment = response.data;
+      
+      // Update the appointments list
+      setAppointments(prev => 
+        prev.map(appt => 
+          appt.id === appointment.id ? updatedAppointment : appt
+        )
+      );
+      
+      setFilteredAppointments(prev => 
+        prev.map(appt => 
+          appt.id === appointment.id ? updatedAppointment : appt
+        )
+      );
+      
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!doctor) {
@@ -163,113 +236,265 @@ const ViewDocPage = () => {
   }
 
   return (
-    <Container className="my-4">
-      <Row>
+    <Container className="my-4 d-flex" style={{ minHeight: '80vh' }}>
+        <Row className="align-items-center w-100"> 
         <Col md={4} className="mb-4">
-          <div className="doctor-card">
-            <div className="profile-photo-container">
-              <img 
-                src={doctor.profilePhoto || '/assets/doctor.svg'} 
-                alt={`Dr. ${doctor.name}`} 
-                className="profile-photo"
-              />
-            </div>
+  <div
+    className="doctor-card d-flex flex-column justify-content-center align-items-start"
+    style={{ position: 'relative', height: '100%', padding: '20px' }}
+  >
+    <div className="d-flex justify-content-center w-100 mb-3">
+      <div className="profile-photo-container">
+        <img 
+          src={doctor.profilePhoto || '/assets/doctor.svg'} 
+          alt={`Dr. ${doctor.name}`} 
+          className="profile-photo"
+          style={{ width: '140px', height: '170px', objectFit: 'cover', borderRadius: '50%' }}
+        />
+      </div>
+    </div>
 
-            <div className="card-content">
-              <div className="doctor-info">
-                <h3 className="doctor-name">{doctor.name}</h3>
-                <div className="info-row">
-                  <span className="label">Specialty:</span>
-                  <span className="value">{doctor.specialty}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Phone:</span>
-                  <span className="value">{doctor.phone}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Price:</span>
-                  <span className="value">{doctor.price || '$200/session'}</span>
-                </div>
-              </div>
+    <div
+      className="card-content"
+      style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      }}
+    >
+      <h3 className="doctor-name">{doctor.name}</h3>
 
-              {role === 'admin' && (
-                <div className="split-button">
-                  <Button onClick={() => setShowEditModal(true)} className="edit-btn">Edit</Button>
-                  <Button onClick={() => setShowDeleteModal(true)} className="delete-btn">Delete</Button>
-                </div>
-              )}
-            </div>
+      <div className="info-row d-flex align-items-center">
+        <span
+          style={{
+            width: '112px',
+            height: '39px',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 700,
+            fontSize: '20px',
+          }}
+        >
+          Specialty
+        </span>
+        <span
+          style={{
+            width: '193px',
+            height: '30px',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            fontSize: '20px',
+            marginLeft: '15px',
+          }}
+        >
+          {doctor.specialty}
+        </span>
+      </div>
+
+      <div className="info-row d-flex align-items-center">
+        <span
+          style={{
+            width: '112px',
+            height: '39px',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 700,
+            fontSize: '20px',
+          }}
+        >
+          Phone
+        </span>
+        <span
+          style={{
+            width: '193px',
+            height: '30px',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            fontSize: '20px',
+            marginLeft: '15px',
+          }}
+        >
+          {doctor.phone}
+        </span>
+      </div>
+
+      <div className="info-row d-flex align-items-center">
+        <span
+          style={{
+            width: '112px',
+            height: '39px',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 700,
+            fontSize: '20px',
+          }}
+        >
+          Price
+        </span>
+        <span
+          style={{
+            width: '193px',
+            height: '30px',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 400,
+            fontStyle: 'italic',
+            fontSize: '20px',
+            marginLeft: '15px',
+          }}
+        >
+          {doctor.price || '$200/session'}
+        </span>
+      </div>
+
+      {role === 'admin' && (
+        <div className="split-button mt-3">
+          <Button onClick={() => setShowEditModal(true)} className="edit-btn">Edit</Button>
+          <Button onClick={() => setShowDeleteModal(true)} className="delete-btn">Delete</Button>
+        </div>
+      )}
+    </div>
+  </div>
+</Col>
+
+
+    <Col md={8}>
+      
+        {loading ? (
+          <div className="text-center py-4">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            <p className="mt-2">Loading appointments...</p>
           </div>
-        </Col>
+        ) : error ? (
+          <Alert variant="danger">{error}</Alert>
+        ) : filteredAppointments.length === 0 ? (
+          <Alert variant="info">No appointments found for this doctor</Alert>
+        ) : (
+      <Table striped hover responsive className="mt-5" style={{ width: '800px' }}>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>{role === 'patient' ? 'Book' : 'Actions'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredAppointments.map((appointment) => (
+            <tr key={appointment.id}>
+              <td>{new Date(appointment.date).toLocaleDateString()}</td>
+              <td>{appointment.time}</td>
+              <td>
+              {role === 'patient' ? (
+                appointment.state === 'open' ? (
+                  <button
+                    style={{
+                      backgroundColor: "#1A2142",
+                      color: "white",
+                      border: "2px solid #1A2142",
+                      padding: "5px 10px",
+                      borderRadius: "5px"
+                    }}
+                    onClick={() => handleBookAppointment(appointment)}
+                  >
+                    Book
+                  </button>
+                ) : appointment.state === 'pending' ? (
+                  <button
+                    style={{
+                      backgroundColor: "#FFA500",
+                      color: "white",
+                      border: "2px solid #FFA500",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                      cursor: 'not-allowed'
+                    }}
+                    disabled
+                  >
+                    Pending
+                  </button>
+                ) : appointment.state === 'ongoing' ? (
+                  <button
+                    style={{
+                      backgroundColor: "#4CAF50",
+                      color: "white",
+                      border: "2px solid #4CAF50",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                      cursor: 'not-allowed'
+                    }}
+                    disabled
+                  >
+                    On Going
+                  </button>
+                ) : appointment.state === 'canceled' ? (
+                  <button
+                    style={{
+                      backgroundColor: "#f44336",
+                      color: "white",
+                      border: "2px solid #f44336",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                      cursor: 'not-allowed'
+                    }}
+                    disabled
+                  >
+                    Canceled
+                  </button>
+                ) : null
+              ) : (
+                  <>
+                <button
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "#6c757d",
+                    border: "2px solid #6c757d",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                    marginRight: "8px"
+                  }}
+                  onClick={() => {
+                    setSelectedAppointment(appointment);
+                    setShowEditAppointmentModal(true);
+                  }}
+                >
+                  Edit
+                </button>
+                    <button
+                      style={{
+                        backgroundColor: "transparent",
+                        color: "#dc3545",
+                        border: "2px solid #dc3545",
+                        padding: "5px 10px",
+                        borderRadius: "5px"
+                      }}
+                      onClick={() => confirmDeleteAppointment(appointment)}
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+        )}
+    
 
-        <Col md={8}>
-          <div className="bg-white p-4 rounded shadow-sm">
-            {loading ? (
-              <div className="text-center py-4">
-                <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
-                <p className="mt-2">Loading appointments...</p>
-              </div>
-            ) : error ? (
-              <Alert variant="danger">{error}</Alert>
-            ) : filteredAppointments.length === 0 ? (
-              <Alert variant="info">No appointments found for this doctor</Alert>
-            ) : (
-              <Table striped bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>{role === 'patient' ? 'Book' : 'Actions'}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredAppointments.map((appointment) => (
-                    <tr key={appointment.id}>
-                      <td>{new Date(appointment.date).toLocaleDateString()}</td>
-                      <td>{appointment.time}</td>
-                      <td>
-                        {role === 'patient' ? (
-                          <Button variant="success" size="sm" onClick={() => alert('Booking logic here')}>
-                            Book
-                          </Button>
-                        ) : (
-                          <>
-                            <Button 
-                              variant="outline-secondary" 
-                              size="sm"
-                              onClick={() => navigate(`/appointments/${appointment.id}/edit`)}
-                              className="me-2"
-                            >
-                              Edit
-                            </Button>
-                            <Button 
-                              variant="outline-danger" 
-                              size="sm"
-                              onClick={() => confirmDeleteAppointment(appointment)}
-                            >
-                              Delete
-                            </Button>
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
-          </div>
-
-          {role === 'admin' && (
-            <div className="text-end mt-3">
-              <Button variant="primary" onClick={() => setShowAddAppointmentModal(true)}>
-                Add Time
-              </Button>
-            </div>
-          )}
-        </Col>
-      </Row>
+      {role === 'admin' && (
+        <div className="text-center mt-3">
+          <Button
+           onClick={() => setShowAddAppointmentModal(true)}
+           style={{ width: '304px', height: '56px' ,
+            backgroundColor: "#1A2142"
+           }}>
+            Add Time
+          </Button>
+        </div>
+      )}
+    </Col>
+  </Row>
 
       {/* Modals */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
@@ -277,7 +502,7 @@ const ViewDocPage = () => {
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete Dr. {doctor.name}? This action cannot be undone.
+          Are you sure you want to delete {doctor.name}? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
@@ -350,6 +575,15 @@ const ViewDocPage = () => {
           onSave={handleSaveDoctor}
         />
       )}
+      {showEditAppointmentModal && (
+  <EditAppointmentModal
+    show={showEditAppointmentModal}
+    onClose={() => setShowEditAppointmentModal(false)}
+    appointment={selectedAppointment}
+    onSave={handleSaveAppointment}
+    loading={loading}
+  />
+)}
     </Container>
   );
 };

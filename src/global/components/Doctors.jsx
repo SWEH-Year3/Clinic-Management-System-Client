@@ -18,6 +18,9 @@ class DoctorsPage extends React.Component {
     };
   }
 
+
+
+  
   componentDidMount() {
     this.fetchDoctors();
   }
@@ -136,11 +139,12 @@ class DoctorsPage extends React.Component {
     const {
       doctors,
       isAddFormOpen,
-      isEditModalOpen,
-      currentDoctor,
       isLoading,
       error,
     } = this.state;
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const role = user?.role;
 
     if (isLoading) {
       return (
@@ -164,10 +168,13 @@ class DoctorsPage extends React.Component {
     return (
       <div className="doctors-page">
         <h1 className="page-title">Doctors Management</h1>
-        <button onClick={this.handleOpenAddForm} className="add-doctor-btn">
-          <Plus size={18} />
-          <span>Add Doctor</span>
-        </button>
+
+        {role === "admin" && (
+          <button onClick={this.handleOpenAddForm} className="add-doctor-btn">
+            <Plus size={18} />
+            <span>Add Doctor</span>
+          </button>
+        )}
 
         <div className="doctors-grid">
           {doctors.length > 0 ? (
@@ -184,19 +191,13 @@ class DoctorsPage extends React.Component {
           )}
         </div>
 
-        {isEditModalOpen && (
-          <EditDoctorModal
-            doctor={currentDoctor}
-            onClose={this.handleCloseModal}
-            onSave={this.handleSaveDoctor}
-          />
-        )}
 
         <AddDoctorForm
           isOpen={isAddFormOpen}
           onClose={this.handleCloseAddForm}
           onAdd={this.handleAddDoctor}
         />
+
       </div>
     );
   }

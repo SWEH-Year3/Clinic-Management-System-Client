@@ -108,7 +108,7 @@ const ClinicAuth = () => {
           <div className="medical-background"></div>
       <div className="auth-content">
         <div className="title-container">
-          <h1>Wellness</h1>
+          <h1>Wellness360</h1>
           <p className="tagline">Professional Healthcare Management</p>
         </div>
 

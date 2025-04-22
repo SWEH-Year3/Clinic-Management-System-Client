@@ -9,9 +9,15 @@ import NavBar from "./global/components/NavBar";
 import AboutPage from "./page/AboutPage/AboutPage";
 import ClinicAuth from "./page/Auth/ClinicAuth";
 import AdminLayout from "./page/Admin/AdminLayout";
-import DoctorsPage from "@/global/components/Doctors";
-import AdminDashboard from "@/global/components/Admin/Dashboard";
+import DoctorsPage from "./global/components/Doctors";
 import PatientLayout from "./page/patient/PatientLayout";
+import ViewDocPage from "./global/components/ViewDocPage";
+import Dashboard from "./page/admin/Dashboard/Dashboard";
+import ProfilePage from "./page/Profile/ProfilePage";
+import Appointments from "./global/components/Appointments";
+import ChatPage from './global/layout/ChatPage'
+import { ChatProvider } from './Context/ChatContext'
+
 import PatientDoctorsPage from "./page/patient/DoctorList";
 import ViewDocPage from "@/global/components/ViewDocPage";
 import Prescription from './global/components/Prescription'
@@ -26,17 +32,30 @@ return (
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route
+           path="/chat/:id?"
+           element={<ChatProvider children={<ChatPage />} />}
+        />
         <Route path="/login" element={<ClinicAuth />} />
         <Route path="/register" element={<ClinicAuth />} />
         
+        <Route path='*' element={<NotFound/>} />
+        <Route path='/appointments' element={<Appointments/>} />
+        
         <Route path="/:role/view-doctor/:id" element={<ViewDocPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+
 
 
         <Route path="/admin/" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="doctors" element={<DoctorsPage />} />
             
+
+
+            {/* <Route path="appointments" element={<UnderDevelopment />} /> */}
+          
 
             <Route path="appointments" element={<UnderDevelopment />} />
                 {/* <Route path="appointments" element={<AppointmentsPage />} /> */}
@@ -51,7 +70,7 @@ return (
 
         <Route  path="/patient/" element={<PatientLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="doctors" element={<PatientDoctorsPage/>} />
+          <Route path="doctors" element={<DoctorsPage/>} />
         
 
         </Route>
@@ -60,6 +79,7 @@ return (
     </Routes>
 </BrowserRouter>
 );
+
 }
 
 export default App;
