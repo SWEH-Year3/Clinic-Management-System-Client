@@ -12,6 +12,7 @@ import AdminDashboard from "@/global/components/Admin/Dashboard";
 import PatientLayout from "./page/patient/PatientLayout";
 import PatientDoctorsPage from "./page/patient/DoctorList";
 import ViewDocPage from "@/global/components/ViewDocPage";
+import Prescription from './global/components/Prescription'
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -41,6 +42,7 @@ return (
             {/* <Route path="reports" element={<ReportsPage />} /> */}
         </Route>
 
+        <Route path='/prescriptions/:id?' element={<Prescription />} />
 
         <Route  path="/patient/" element={<PatientLayout />}>
           <Route index element={<HomePage />} />
