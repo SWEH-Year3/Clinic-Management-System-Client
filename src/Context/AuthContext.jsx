@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState({
+    
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))||{
         id: '',
         token: null,
         name: '',
@@ -15,9 +16,9 @@ export const AuthProvider = ({ children }) => {
 
 
     const logout = () => {
-        setUser({ isLoggedIn: false, role: null, token: null });
+        setUser({ isLoggedIn: false, role: null, token: null, email: null, name:null, id:null});
         //to-do
-        //localStorage.removeItem("user");
+        localStorage.removeItem("user");
     };
 
     return (

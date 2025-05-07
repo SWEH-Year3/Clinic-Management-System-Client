@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./../../Context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -9,6 +9,7 @@ import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 const Navbar = () => {
     const { user, logout } = useAuth();
     const location = useLocation();
+    const navigate = useNavigate();
 
 const renderCenterLinks = () => {
     if (!user?.isLoggedIn) {
@@ -83,7 +84,10 @@ const renderRightLinks = () => {
     </Link>
         </li>
         <li className="nav-item">
-            <span className=" ms-2" style={{ fontWeight: "bold", color: "#1A2142"}} onClick={logout}>
+                <span className=" ms-2" style={{ fontWeight: "bold", color: "#1A2142", cursor: 'pointer' }} onClick={() => {
+                    navigate("/");
+                    logout();
+                }}>
             Logout
             </span>
         </li>

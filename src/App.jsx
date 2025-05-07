@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { ToastContainer } from "react-toastify";
 
@@ -8,20 +7,20 @@ import HomePage from "./page/HomePage/Home";
 import NavBar from "./global/components/NavBar";
 import AboutPage from "./page/AboutPage/AboutPage";
 import ClinicAuth from "./page/Auth/ClinicAuth";
-import AdminLayout from "./page/Admin/AdminLayout";
-import DoctorsPage from "./global/components/Doctors";
-import PatientLayout from "./page/patient/PatientLayout";
-import ViewDocPage from "./global/components/ViewDocPage";
+// import AdminLayout from "./page/Admin/AdminLayout";
+// import DoctorsPage from "./global/components/Doctors";
+// import PatientLayout from "./page/patient/PatientLayout";
+// import ViewDocPage from "./global/components/ViewDocPage";
 import Dashboard from "./page/admin/Dashboard/Dashboard";
-import ProfilePage from "./page/Profile/ProfilePage";
-import Appointments from "./global/components/Appointments";
-import ChatPage from './global/layout/ChatPage'
-import { ChatProvider } from './Context/ChatContext'
+// import ProfilePage from "./page/Profile/ProfilePage";
+// import Appointments from "./global/components/Appointments";
+// import ChatPage from './global/layout/ChatPage'
+// import { ChatProvider } from './Context/ChatContext'
 
-import PatientDoctorsPage from "./page/patient/DoctorList";
-import ViewDocPage from "@/global/components/ViewDocPage";
-import Prescription from './global/components/Prescription'
-import Appointments from './global/components/Appointments'
+// import PatientDoctorsPage from "./page/patient/DoctorList";
+// import ViewDocPage from "@/global/components/ViewDocPage";
+// import Prescription from './global/components/Prescription'
+// import Appointments from './global/components/Appointments'
 
 // To-Do: Add Route to each new page developed
 function App() {
@@ -32,50 +31,53 @@ return (
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route
+        {/* <Route
            path="/chat/:id?"
            element={<ChatProvider children={<ChatPage />} />}
-        />
+        /> */}
         <Route path="/login" element={<ClinicAuth />} />
         <Route path="/register" element={<ClinicAuth />} />
         
         <Route path='*' element={<NotFound/>} />
-        <Route path='/appointments' element={<Appointments/>} />
+        {/* <Route path='/appointments' element={<Appointments/>} /> */}
         
-        <Route path="/:role/view-doctor/:id" element={<ViewDocPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        {/* <Route path="/:role/view-doctor/:id" element={<ViewDocPage />} />
+        <Route path="/profile" element={<ProfilePage />} /> */}
 
 
 
-        <Route path="/admin/" element={<AdminLayout />}>
+        {/* <Route path="/admin/" element={<AdminLayout />}> */}
+        <Route path="/admin/" >
             <Route index element={<Dashboard />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="doctors" element={<DoctorsPage />} />
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='dashboard/:id' element={<Dashboard />} />
+            {/* // <Route path="dashboard" element={<Dashboard />} /> */}
+            {/* <Route path="doctors" element={<DoctorsPage />} /> */}
             
 
 
             {/* <Route path="appointments" element={<UnderDevelopment />} /> */}
           
 
-            <Route path="appointments" element={<UnderDevelopment />} />
+            {/* <Route path="appointments" element={<UnderDevelopment />} /> */}
                 {/* <Route path="appointments" element={<AppointmentsPage />} /> */}
-                <Route path='/appointments' element={<Appointments />} />
+                {/* <Route path='/appointments' element={<Appointments />} /> */}
 
 
-            <Route path="reports" element={<UnderDevelopment />} />
+            {/* <Route path="reports" element={<UnderDevelopment />} /> */}
             {/* <Route path="reports" element={<ReportsPage />} /> */}
         </Route>
 
-        <Route path='/prescriptions/:id?' element={<Prescription />} />
+        {/* <Route path='/prescriptions/:id?' element={<Prescription />} /> */}
 
-        <Route  path="/patient/" element={<PatientLayout />}>
+        {/* <Route  path="/patient/" element={<PatientLayout />}>
           <Route index element={<HomePage />} />
           <Route path="doctors" element={<DoctorsPage/>} />
         
 
-        </Route>
+        </Route> */}
 
-        <Route path="*" element={<NotFound />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
 </BrowserRouter>
 );
