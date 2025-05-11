@@ -430,7 +430,7 @@ const ViewDocPage = () => {
             <div className="d-flex justify-content-center w-100 mb-3">
             <div className="profile-photo-container">
                 <img 
-                src={doctor.profilePhoto || '/assets/doctor.svg'} 
+                src={doctor.profilePhoto || 'assets/doctor.svg'} 
                 alt={`Dr. ${doctor.name}`} 
                 className="profile-photo"
                 style={{ width: '140px', height: '170px', objectFit: 'cover', borderRadius: '50%' }}
@@ -560,7 +560,7 @@ const ViewDocPage = () => {
         ) : (
       <Table striped hover responsive className="mt-5 text-center" style={{ width: '800px' }} >
         <thead>
-          <tr>
+          <tr className="table-primary">
             <th>Date</th>
             <th>Time</th>
             <th>{role === 'patient' ? 'Book' : 'Actions'}</th>

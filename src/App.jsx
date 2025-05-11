@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 
 
 import { ToastContainer } from "react-toastify";
@@ -27,7 +27,7 @@ import ProfilePage from './page/Profile/ProfilePage';
 // To-Do: Add Route to each new page developed
 function App() {
 return (
-<BrowserRouter>
+<HashRouter>
     <NavBar />
     <ToastContainer position='top-right'/>
     <Routes>
@@ -58,7 +58,7 @@ return (
         <Route path='/prescriptions/:id?' element={<Prescription />} />
 
     </Routes>
-</BrowserRouter>
+</HashRouter>
 );
 
 }

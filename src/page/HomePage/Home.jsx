@@ -4,12 +4,12 @@ const HomePage = () => {
     return (
         <div style={{padding: '20px'}}>
             <div className='banner' >
-                <img loading='lazy' style={{width:"100%",maxHeight: '500px' ,borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', marginBottom: '20px', objectFit: 'cover'}} src="/assets/banner.jpg" alt='Banner'/>
+                <img loading='lazy' style={{width:"100%",maxHeight: '500px' ,borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', marginBottom: '20px', objectFit: 'cover'}} src="assets/banner.jpg" alt='Banner'/>
             </div>
             <div className='services' style={{paddingTop: '20px'}}>
                 <div className="cardy" style={{paddingBottom: '10px', display: 'flex', flexWrap: 'wrap'}}>
                     <div className="cardy-img">
-                        <img loading='lazy' src="/assets/schedule.jpg" style={{marginRight: '20px', maxWidth: '400px', objectFit: 'cover', borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', maxHeight: '300px'}} alt="Schedule" />
+                        <img loading='lazy' src="assets/schedule.jpg" style={{marginRight: '20px', maxWidth: '400px', objectFit: 'cover', borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', maxHeight: '300px'}} alt="Schedule" />
                     </div>
                     <div className="cardy-body" style={{padding: '20px', paddingTop: '20px', maxWidth: '700px'}}>
                         <span style={{fontWeight: 'bold', color: '#1A2142', fontSize: '20px', lineHeight: '3'}}>
@@ -23,7 +23,7 @@ const HomePage = () => {
                 </div>
                 <div className="cardy" style={{paddingBottom: '10px', display: 'flex', flexWrap: 'wrap'}}>
                     <div className="cardy-img">
-                        <img loading='lazy' src="/assets/medical.png" style={{marginRight: '20px', objectFit: 'cover', maxWidth: '400px', borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', maxHeight: '300px'}} alt="Schedule" />
+                        <img loading='lazy' src="assets/medical.png" style={{marginRight: '20px', objectFit: 'cover', maxWidth: '400px', borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', maxHeight: '300px'}} alt="Schedule" />
                     </div>
                     <div className="cardy-body" style={{padding: '20px', paddingTop: '20px', maxWidth: '700px'}}>
                         <span style={{fontWeight: 'bold', color: '#1A2142', fontSize: '20px', lineHeight: '3'}}>
@@ -35,7 +35,7 @@ const HomePage = () => {
                 </div>
                 <div className="cardy" style={{display: 'flex', flexWrap: 'wrap'}}>
                     <div className="cardy-img">
-                        <img loading='lazy' src="/assets/chat.png" style={{marginRight: '20px', objectFit: 'cover', maxWidth: '400px', borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', maxHeight: '300px'}} alt="Schedule" />
+                        <img loading='lazy' src="assets/chat.png" style={{marginRight: '20px', objectFit: 'cover', maxWidth: '400px', borderRadius: '15px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', maxHeight: '300px'}} alt="Schedule" />
                     </div>
                     <div className="cardy-body" style={{padding: '20px', paddingTop: '20px', maxWidth: '700px'}}>
                         <span style={{fontWeight: 'bold', color: '#1A2142', fontSize: '20px', lineHeight: '3'}}>

@@ -140,21 +140,23 @@ const Appointments = () => {
     }
     return (
         <div className="container pt-5">
-            <div className="container-fluid w-50 my-3">
-            <form className="d-flex" role="search" onChange={handleSearch}>
-                <input className="form-control me-2" type="search" placeholder="Search By Doctor Name" aria-label="Search" list="doctors" />
-                {/* <button className="btn btn-outline-primary" type="submit">Search</button> */}
-                <datalist id="doctors">
-                    {appointments.map((appointment) => (
-                        <option key={appointment.id} value={appointment.doctorName} />
-                    ))}
-                </datalist>
-            </form>
-        </div>
+            {!isDoctor && (
+                    <div className="container-fluid w-50 my-3">
+                    <form className="d-flex" role="search" onChange={handleSearch}>
+                        <input className="form-control me-2" type="search" placeholder="Search By Doctor Name" aria-label="Search" list="doctors" />
+                        {/* <button className="btn btn-outline-primary" type="submit">Search</button> */}
+                        <datalist id="doctors">
+                            {appointments.map((appointment) => (
+                                <option key={appointment.id} value={appointment.doctorName} />
+                            ))}
+                        </datalist>
+                    </form>
+                </div>
+            )}
         <table className="table  table-hover text-start">
             <thead>
             <tr className='table-secondary'>
-                {isPatient || isAdmin && <th>Doctor</th>}
+                {(isPatient || isAdmin) && <th>Doctor</th>}
                 {(isDoctor || isAdmin) && <th>Patient</th>}
                 {isPatient && <th>Specialty</th>}
                 {(isDoctor || isAdmin) && <th>Phone</th>}

@@ -17,7 +17,7 @@ const ChatPage = () => {
                 <div className={id == null ? "container col d-flex justify-content-center align-items-center" : "col"} style={{paddingLeft:"0", paddingRight:"0", maxHeight: "88vh", maxWidth: "80%"}} >
                 
                 {id == null ? <div className="chatNotFound" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                            <img src="/assets/chat-background.jpg" alt="chat not found" style={{width: "50%"}}/>
+                            <img src="assets/chat-background.jpg" alt="chat not found" style={{width: "50%"}}/>
                         </div> : <ChatRoom/> }
                         
 

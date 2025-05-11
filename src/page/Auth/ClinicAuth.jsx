@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../Context/AuthContext";
 import "../Auth/ClinicAuth.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
     faUser,
@@ -194,7 +194,7 @@ const ClinicAuth = () => {
                                         userRole === "doctor" ? "Dr. John Smith" : "John Smith"
                                     }
                                 />
-                                <FontAwesomeIcon icon={faUser} className="input-icon" />
+                                {/* <FontAwesomeIcon icon={faUser} className="input-icon" /> */}
                             </div>
 
                             <div className="form-group">
@@ -208,7 +208,7 @@ const ClinicAuth = () => {
                                     required
                                     placeholder="+20114545788"
                                 />
-                                <FontAwesomeIcon icon={faPhone} className="input-icon" />
+                                {/* <FontAwesomeIcon icon={faPhone} className="input-icon" /> */}
                             </div>
 
                             {/* To-Do: To be Removed */}
@@ -244,7 +244,7 @@ const ClinicAuth = () => {
                                             required
                                             placeholder="MD-123456"
                                         />
-                                        <FontAwesomeIcon icon={faIdCard} className="input-icon" />
+                                        {/* <FontAwesomeIcon icon={faIdCard} className="input-icon" /> */}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="specialization">Specialization</label>
@@ -257,10 +257,10 @@ const ClinicAuth = () => {
                                             required
                                             placeholder="Cardiology"
                                         />
-                                        <FontAwesomeIcon
+                                        {/* <FontAwesomeIcon
                                             icon={faStethoscope}
                                             className="input-icon"
-                                        />
+                                        /> */}
                                     </div>
                                 </>
                             )}
@@ -278,7 +278,7 @@ const ClinicAuth = () => {
                             required
                             placeholder="user@example.com"
                         />
-                        <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
+                        {/* <FontAwesomeIcon icon={faEnvelope} className="input-icon" /> */}
                     </div>
 
                     <div className="form-group">
@@ -299,7 +299,7 @@ const ClinicAuth = () => {
                                 document.getElementById("password").type = "password";
                             }}
                         />
-                        <FontAwesomeIcon icon={faLock} className="input-icon" />
+                        {/* <FontAwesomeIcon icon={faLock} className="input-icon" /> */}
                     </div>
 
                     {!isSignIn && (
@@ -321,7 +321,7 @@ const ClinicAuth = () => {
                                     document.getElementById("confirmPassword").type = "password";
                                 }}
                             />
-                            <FontAwesomeIcon icon={faLock} className="input-icon" />
+                            {/* <FontAwesomeIcon icon={faLock} className="input-icon" /> */}
                         </div>
                     )}
                     

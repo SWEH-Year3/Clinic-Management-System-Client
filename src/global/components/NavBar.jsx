@@ -96,15 +96,18 @@ const Navbar = () => {
         };
         return (
             <div className="d-flex align-items-center ">
+                {(user.role !== "admin") && (
+
                 <li className="nav-item d-flex align-items-center" onClick={handleBurgerClick}>
                     <Link to={"/chat"} style={{ textDecoration: "none" }}>
                         <FontAwesomeIcon icon={faCommentDots} style={{ width: "25px", height: "25px", color: "#1A2142" }} />
                     </Link>
                 </li>
+                )}
                 <li className="nav-item" onClick={handleBurgerClick}>
                     <Link to="/profile">
                         <img
-                            src="/assets/avatar.png"
+                            src="assets/avatar.png"
                             alt="profile"
                             style={{
                                 maxWidth: "40px",
@@ -132,7 +135,7 @@ const Navbar = () => {
             <div className="container-fluid">
                 {/* Left: Logo */}
                 <Link className="navbar-brand" to="/">
-                    <img src="/assets/logo.jpg" alt="Logo" style={{ borderRadius: "50%", maxWidth: "50px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }} />
+                    <img src="assets/logo.jpg" alt="Logo" style={{ borderRadius: "50%", maxWidth: "50px", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }} />
                 </Link>
 
                 {/* Toggle button for mobile */}

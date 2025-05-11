@@ -45,7 +45,7 @@ const DoctorCard = ({ keyID,doctor}) => {
     <div className="doctor-card" key={keyID}>
       <div className="profile-photo-container">
         <img 
-          src={doctor.profilePhoto || '/assets/doctor.svg'} 
+          src={doctor.profilePhoto || 'assets/doctor.svg'} 
           alt={`Dr. ${doctor.name}`} 
           className="profile-photo"
         />

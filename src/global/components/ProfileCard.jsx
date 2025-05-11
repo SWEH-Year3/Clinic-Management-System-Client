@@ -288,7 +288,7 @@ const ProfileCard = () => {
         {/* Image */}
         <Col md={6} className="h-100" style={{ backgroundColor: 'white' }}>
           <Card.Img 
-            src="/assets/avatar.png" 
+            src="assets/avatar.png" 
             alt="Profile"
             className="h-100 w-100"
             style={{ objectFit: 'contain' }}

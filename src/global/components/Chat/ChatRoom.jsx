@@ -29,6 +29,12 @@ const ChatRoom = () => {
     
     const messagesEndRef = useRef(null);
     const connectionRef = useRef(null);
+
+
+    const typingAudio = new Audio('audio/typing.mp3');
+    typingAudio.preload = 'auto';
+    typingAudio.load(); 
+
     //every id change will bring messages
     useEffect(() => {
         setMessage((prev) => ({
@@ -50,16 +56,24 @@ const ChatRoom = () => {
                 console.log("no sender or reciever");    
                 return
             }
+
+        playNotificationSound();  
+            
         connectionRef.current.invoke("SendMessage", message.senderID, message.recieverID, message.content, message.recieverName, message.senderName);
         // setMessages([...messages, message]);
         setMessage({ ...message, content: "" }); // reset editor
         }
-        playNotificationSound();    
     };
 
+    // const playNotificationSound = () => {
+    //     const audio = new Audio('audio/typing.mp3');
+    //     audio.play().catch(e => console.error("Audio playback failed:", e));
+    // };
     const playNotificationSound = () => {
-        const audio = new Audio('/audio/typing.mp3');
-        audio.play().catch(e => console.error("Audio playback failed:", e));
+        typingAudio.currentTime = 0;         // rewind instantly
+        typingAudio.play().catch(e =>
+            console.error("Audio playback failed:", e)
+        );
     };
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -69,7 +83,7 @@ const ChatRoom = () => {
     
     
     const playNotificationNotifySound = () => {
-        const audio = new Audio('/audio/notify.mp3');
+        const audio = new Audio('audio/notify.mp3');
         audio.play().catch(e => console.error("Audio playback failed:", e));
     };
     useEffect(() => {
@@ -89,7 +103,12 @@ const ChatRoom = () => {
         // Setup SignalR connection
         //update with hub link
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl(`https://localhost:7237/hubs/chat?senderID=${myID}&recieverID=${id}`, {withCredentials: true})
+            .withUrl(`https://localhost:7237/hubs/chat?senderID=${myID}&recieverID=${id}`,
+                {
+                    withCredentials: true,
+                    transport: signalR.HttpTransportType.WebSockets,
+                    skipNegotiation: true
+                 })
             .withAutomaticReconnect()
             .build();
 

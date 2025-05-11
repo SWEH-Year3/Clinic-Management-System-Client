@@ -38,7 +38,7 @@ const ChatList = () => {
         .catch(error => {
             console.warn(error);
         });
-    }, []);
+    }, [notify]);
 
     
     
@@ -64,14 +64,7 @@ const ChatList = () => {
             }
     }, [id,myID]);
 
-    useEffect(() => {
-
-        // const newNotification = JSON.parse(localStorage.getItem(`notification-${}`));
-        console.log("chatlist New message");
-        console.log(notify);
-    }), [
-         notify
-     ];
+    
     
 
 if (chats.length == 0) {
@@ -93,14 +86,14 @@ if (chats.length == 0) {
             {chats.map((chat, index) => (
                 <Link key={index} to={`/chat/${chat.senderName}/${chat.senderID}`} style={{textDecoration: "none"}}>
                     <li key={index} style={{paddingTop: "10px", paddingBottom: "10px", backgroundColor: (chat.senderID) == id ? "#2C3E50" : "#4A6572", borderBottom: "solid", borderBottomColor: "#1A2D42", cursor: "pointer", transition: "background-color 0.3s ease"}}>
-                        <img src="/assets/avatar.png" alt="profile" style={{maxWidth:"40px", marginLeft: "10px", marginRight: "10px"}} />
+                        <img src="assets/avatar.png" alt="profile" style={{maxWidth:"40px", marginLeft: "10px", marginRight: "10px"}} />
                         <span style={{ fontWeight: "bold", color: "white" }}>{chat.senderName}
                             {notify.length > 0 && notify.filter((n) => n.id === chat.senderID).length > 0 &&
                             (
                                 
-                            <span class=" mx-1  badge rounded-pill bg-danger">
+                            <span className=" mx-1  badge rounded-pill bg-danger">
                                 {notify.filter((n) => n.id === chat.senderID).length}
-                                <span class="visually-hidden">unread messages</span>
+                                <span className="visually-hidden">unread messages</span>
                             </span>
                         )}
 
