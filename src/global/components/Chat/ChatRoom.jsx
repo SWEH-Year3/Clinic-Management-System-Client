@@ -12,7 +12,7 @@ import { useChat } from './../../../Context/ChatContext';
 
 
 const ChatRoom = () => {
-    const { chatUser } = useChat();
+    const { chatUser, setNotify } = useChat();
     // const chatUserRef = useRef(chatUser);
     useEffect(() => {
         // chatUserRef.current = chatUser;
@@ -20,8 +20,8 @@ const ChatRoom = () => {
         console.log(chatUser);
     }, [chatUser]);
 
-    const { id } = useParams();
-    const myID = "201";
+    const { id, docName } = useParams();
+    const myID = JSON.parse(localStorage.getItem('user')).id;
 
     const [message, setMessage] = useState({ senderID: myID, recieverID: id, content: "", recieverName: '', senderName: '' });
     
@@ -33,35 +33,58 @@ const ChatRoom = () => {
     useEffect(() => {
         setMessage((prev) => ({
             ...prev,
-            recieverID: chatUser.recieverID,
-            recieverName: chatUser.recieverName,
-            senderName: chatUser.name,
-            senderID: chatUser.id,
+            recieverID: id,
+            recieverName: docName,
+            senderName: JSON.parse(localStorage.getItem('user')).name,
+            senderID: myID,
         }));
     }, [id,chatUser]);
 
     const sendMessage = () => {
         if (message.content.trim() !== "") {
         console.log(message);
-        connectionRef.current.invoke("SendMessage", message.senderID.toString(), message.recieverID.toString(), message.content, message.recieverName, message.senderName);
+            if (!connectionRef.current) return;
+            if (message.senderID == "" || message.recieverID == "") {
+                console.log(`myId = ${myID}`);    
+                console.log(`Id = ${id}`);    
+                console.log("no sender or reciever");    
+                return
+            }
+        connectionRef.current.invoke("SendMessage", message.senderID, message.recieverID, message.content, message.recieverName, message.senderName);
         // setMessages([...messages, message]);
         setMessage({ ...message, content: "" }); // reset editor
         }
+        playNotificationSound();    
     };
 
-
+    const playNotificationSound = () => {
+        const audio = new Audio('/audio/typing.mp3');
+        audio.play().catch(e => console.error("Audio playback failed:", e));
+    };
     useEffect(() => {
         if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [messages]);
     
+    
+    const playNotificationNotifySound = () => {
+        const audio = new Audio('/audio/notify.mp3');
+        audio.play().catch(e => console.error("Audio playback failed:", e));
+    };
     useEffect(() => {
         console.log("Room");
         console.log(chatUser);
         // Fetch old messages
         axios.get(`https://localhost:7237/api/Messages/conversation?senderID=${myID}&recieverID=${id}`)
-            .then(res => setMessages(res.data));
+            .then(res => {
+                setMessages(res.data)
+                setNotify(prev =>
+                {
+                    return prev.filter(item => item.id !== id);
+                    
+                });
+            });
 
         // Setup SignalR connection
         //update with hub link
@@ -71,6 +94,12 @@ const ChatRoom = () => {
             .build();
 
         connection.on("ReceiveMessage", msg => {
+            if (msg.recieverID === myID && msg.senderID !== id) {
+                // console.log("Notification");
+                playNotificationNotifySound();
+                
+                setNotify(prev => [...prev, { id: msg.senderID}]);
+            }
             if ((msg.senderID === id && msg.recieverID === myID) || (msg.senderID === myID && msg.recieverID === id)) {
                 setMessages(prev => [...prev, msg]);
             }

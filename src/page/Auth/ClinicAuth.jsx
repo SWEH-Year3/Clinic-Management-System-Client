@@ -19,6 +19,7 @@ const ClinicAuth = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isSignIn, setIsSignIn] = useState(true);
+    const [loader, setLoader] = useState(false);
     const [userRole, setUserRole] = useState("patient");
     const [formData, setFormData] = useState({
         fullName: "",
@@ -45,6 +46,7 @@ const ClinicAuth = () => {
     };
 
     const handleSubmit = async (e) => {
+        setLoader(true);
         e.preventDefault();
 
         if (!isSignIn && formData.password !== formData.confirmPassword) {
@@ -134,6 +136,8 @@ const ClinicAuth = () => {
             toast.error(
                 `Something went wrong while ${isSignIn ? "logging in" : "registering"}.`
             );
+        } finally {
+            setLoader(false);
         }
     };
 
@@ -288,6 +292,12 @@ const ClinicAuth = () => {
                             required
                             placeholder="••••••••"
                             minLength="6"
+                            onMouseEnter={() => {
+                                document.getElementById("password").type = "text";
+                            }}
+                            onMouseLeave={() => {
+                                document.getElementById("password").type = "password";
+                            }}
                         />
                         <FontAwesomeIcon icon={faLock} className="input-icon" />
                     </div>
@@ -304,15 +314,32 @@ const ClinicAuth = () => {
                                 required
                                 placeholder="••••••••"
                                 minLength="6"
+                                onMouseEnter={() => {
+                                    document.getElementById("confirmPassword").type = "text";
+                                }}
+                                onMouseLeave={() => {
+                                    document.getElementById("confirmPassword").type = "password";
+                                }}
                             />
                             <FontAwesomeIcon icon={faLock} className="input-icon" />
                         </div>
                     )}
+                    
+                                
+                    <button type="submit" className="submit-btn" disabled={loader}>
+                        {
+                            loader ? (
 
-                    <button type="submit" className="submit-btn">
-                        {isSignIn ? "Sign In" : "Create Account"}
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
 
+                            ) : (
+                        isSignIn ? "Sign In" : "Create Account"
+                            )
+                        }
                     </button>
+
                 </form>
 
                 <div className="auth-footer">

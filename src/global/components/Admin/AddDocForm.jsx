@@ -8,7 +8,7 @@ const AddDocForm = ({ isOpen, onClose, onAdd }) => {
     phone: '',
     specialty: '',
     price: '',
-    profilePhoto: ''
+    // profilePhoto: ''
   });
 
   const handleChange = (e) => {
@@ -21,8 +21,8 @@ const AddDocForm = ({ isOpen, onClose, onAdd }) => {
     if (newDoctor.name && newDoctor.specialty) {
       onAdd({
         ...newDoctor,
-        id: Date.now(),
-        email: `${newDoctor.name.replace(/\s+/g, '').toLowerCase()}@example.com`
+        // id: Date.now(),
+        // email: `${newDoctor.name.replace(/\s+/g, '').toLowerCase()}@example.com`
       });
       onClose();
     }

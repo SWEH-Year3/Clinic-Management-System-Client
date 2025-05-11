@@ -34,7 +34,7 @@ const Dashboard = () => {
                     ...item,
                     month: months[new Date(item.month).getMonth()]
                 })));
-                console.log(response.data);
+                // console.log(response.data);
             })
             .catch((error) => {
                 console.error('Error fetching doctor data:', error);
@@ -56,7 +56,7 @@ const Dashboard = () => {
                 }
             )
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 setDoctors(response.data);
             })
             .catch((error) => {
@@ -77,11 +77,32 @@ const Dashboard = () => {
         // setChartData(updatedData);
         navigate(`/admin/dashboard/${doctor.doctorId}`);
     };
+    // console.log(selectedDoctor);
+
+    const handleSearch = async(e) => {
+        e.preventDefault();
+        if (e.target.value == '') {
+            await axios.get(`https://localhost:7195/api/Report`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`,
+                }    
+            }).then((response) => {
+                // console.log(response.data);
+                setDoctors(response.data);
+            })
+            return;
+        } else {
+            const searchValue = e.target.value;
+            const filteredDoctors = doctors.filter((doctor) => doctor.name.toLowerCase().includes(searchValue.toLowerCase()));
+            setDoctors(filteredDoctors);
+        }
+    };
 
     return (
         <div className="container mt-5">
 
-        {!selectedDoctor ? <div className="ReportNotFound" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+            {!selectedDoctor || selectedDoctor.monthlyAppointments.reduce((a, b) => a + b.appointmentCount, 0) == 0 ? <div className="ReportNotFound" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                             <img src="/assets/ReportNotFound.jpg" alt="report not found" style={{width: "35%"}}/>
                         </div> :  
         <>
@@ -98,10 +119,21 @@ const Dashboard = () => {
                 </>}
             
         
-                <div style={{maxHeight:"250px", overflow:"auto", marginBottom:"50px"}}>
-                    <table className="table table-bordered table-hover table-striped mt-5 text-center table-scrollable">
+                <div className="container-fluid w-50 ">
+                    <form className="d-flex" role="search" onChange={handleSearch} >
+                        <input className="form-control me-2" type="search" placeholder="Search By Doctor Name" aria-label="Search" list="doctors" />
+                        {/* <button className="btn btn-outline-primary" type="submit">Search</button> */}
+                        <datalist id="doctors">
+                            {doctors.map((doc,i) => (
+                                <option key={i} value={doc.name} />
+                            ))}
+                        </datalist>
+                    </form>
+                </div>
+            <div style={{ maxHeight: "250px", overflow: "auto", marginBottom: "50px" }}>
+                    <table className="table table-bordered table-hover table-striped mt-3 text-center table-scrollable">
                         <thead>
-                        <tr>
+                        <tr className='table-primary'>
                             <th>Doctor Name</th>
                             <th>Specialty</th>
                             <th>Total Appointments</th>

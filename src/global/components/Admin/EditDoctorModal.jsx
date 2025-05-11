@@ -7,8 +7,10 @@ const EditDoctorModal = ({ doctor, onClose, onSave }) => {
     name: doctor?.name || '',
     specialty: doctor?.specialty || '',
     phone: doctor?.phone || '',
+    email: doctor?.email || '',
+    price: doctor?.price || ''
   });
-  
+    // console.log(doctor);
   const [errors, setErrors] = React.useState({});
 
   const handleChange = (e) => {
@@ -31,6 +33,8 @@ const EditDoctorModal = ({ doctor, onClose, onSave }) => {
     if (!formData.name?.trim()) newErrors.name = 'Name is required';
     if (!formData.specialty?.trim()) newErrors.specialty = 'Specialty is required';
     if (!formData.phone?.trim()) newErrors.phone = 'Phone is required';
+    if (!formData.email?.trim()) newErrors.email = 'Email is required';
+    if (!formData.price?.trim()) newErrors.price = 'Price is required';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -42,7 +46,8 @@ const EditDoctorModal = ({ doctor, onClose, onSave }) => {
       const updatedDoctor = {
         ...doctor,
         ...formData
-      };
+    };
+    // console.log(updatedDoctor)    
       onSave(updatedDoctor);
     }
   };
@@ -67,6 +72,17 @@ const EditDoctorModal = ({ doctor, onClose, onSave }) => {
               className={errors.name ? 'error' : ''}
             />
             {errors.name && <span className="error-message">{errors.name}</span>}
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={errors.email ? 'error' : ''}
+            />
+            {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
           
           <div className="form-group">
@@ -93,6 +109,17 @@ const EditDoctorModal = ({ doctor, onClose, onSave }) => {
               className={errors.phone ? 'error' : ''}
             />
             {errors.phone && <span className="error-message">{errors.phone}</span>}
+          </div>
+          <div className="form-group">
+            <label>Price</label>
+            <input
+              type="text"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className={errors.price ? 'error' : ''}
+            />
+            {errors.price && <span className="error-message">{errors.price}</span>}
           </div>
           
           <div className="form-actions">

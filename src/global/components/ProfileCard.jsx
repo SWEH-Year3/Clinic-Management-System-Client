@@ -22,20 +22,51 @@ const ProfileCard = () => {
         let profileData = null;
 
         if (user.role === 'doctor') {
-          const response = await axios.get(`http://localhost:3000/doctors/${user.id}`);
-          profileData = response.data || {};
+            const response = await axios.get(`https://localhost:7195/api/Profile/doctor/${user.id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        });
+            profileData = {
+                name: response.data.userName,
+                email: response.data.email,
+                phone: response.data.phoneNumber,
+                role: 'doctor',
+                price: response.data.price,
+                specialty: response.data.specialty
+          };
           
           if (profileData.price) {
             profileData.price = Number(profileData.price);
           }
         } else if (user.role === 'patient') {
-          const response = await axios.get(`http://localhost:3000/patients/${user.id}`);
-          profileData = response.data || {};
+            const response = await axios.get(`https://localhost:7195/api/Profile/${user.id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            }
+            );
+            profileData = {
+                name: response.data.userName,
+                email: response.data.email,
+                phone: response.data.phoneNumber,
+                role: 'patient'
+            };
         } else if (user.role === 'admin') {
+            const response = await axios.get(`https://localhost:7195/api/Profile/${user.id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
           profileData = {
-            name: user.name,
-            email: user.email,
-            phone: 'Not specified',
+            name: response.data.userName,
+            email: response.data.email,
+              phone: response.data.phoneNumber??'Not Provided',
             role: 'admin'
           };
         }
@@ -81,9 +112,33 @@ const ProfileCard = () => {
       setError(null);
       
       if (user.role === 'doctor') {
-        await axios.patch(`http://localhost:3000/doctors/${user.id}`, editedProfile);
-      } else if (user.role === 'patient') {
-        await axios.patch(`http://localhost:3000/patients/${user.id}`, editedProfile);
+          await axios.put(`https://localhost:7195/api/Profile/doctor/${user.id}`, {
+            userName: editedProfile.name,
+            email: editedProfile.email,
+            phoneNumber: editedProfile.phone,
+            price: editedProfile.price,
+            specialty : editedProfile.specialty
+          },
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${user.token}`
+              }
+          }
+        );
+      } else if (user.role === 'patient' || user.role === 'admin') {
+          await axios.put(`https://localhost:7195/api/Profile/${user.id}`, {
+            userName: editedProfile.name,
+            email: editedProfile.email,
+            phoneNumber: editedProfile.phone
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        }
+        );
       }
       
       // Update local profile state with edited values
@@ -236,7 +291,7 @@ const ProfileCard = () => {
             src="/assets/avatar.png" 
             alt="Profile"
             className="h-100 w-100"
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'contain' }}
           />
         </Col>
       </Row>

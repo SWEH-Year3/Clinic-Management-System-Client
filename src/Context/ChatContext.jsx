@@ -11,8 +11,9 @@ export const ChatProvider = ({ children }) => {
         recieverName: '',
     });
 
+    const [notify, setNotify] = useState([]);
     return (
-        <ChatContext.Provider value={{ chatUser, setChatUser }}>
+        <ChatContext.Provider value={{ chatUser, setChatUser, notify, setNotify }}>
         {children}
         </ChatContext.Provider>
     );

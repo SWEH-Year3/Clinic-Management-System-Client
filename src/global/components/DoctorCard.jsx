@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
 import './DoctorCard.css';
 
-const DoctorCard = ({ doctor }) => {
+const DoctorCard = ({ keyID,doctor}) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleViewDoctor = () => {
-    navigate(`/${user?.role}/view-doctor/${doctor.id}`, { state: { doctor } });
+    navigate(`/view-doctor/${doctor.doctorId}`, { state: { doctor } });
   };
 
   const handleChatWithDoctor = () => {
-    navigate(`/chat/${doctor.id}`);
+    navigate(`/chat/${doctor.name}/${doctor.doctorId}`);
   };
 
   const renderActions = () => {
@@ -42,7 +42,7 @@ const DoctorCard = ({ doctor }) => {
   };
 
   return (
-    <div className="doctor-card">
+    <div className="doctor-card" key={keyID}>
       <div className="profile-photo-container">
         <img 
           src={doctor.profilePhoto || '/assets/doctor.svg'} 
@@ -64,7 +64,7 @@ const DoctorCard = ({ doctor }) => {
           </div>
           <div className="info-row">
             <span className="label">Price</span>
-            <span className="value">{doctor.price || '$200/session'}</span>
+            <span className="value">{`${doctor?.price} EG`}</span>
           </div>
         </div>
 
