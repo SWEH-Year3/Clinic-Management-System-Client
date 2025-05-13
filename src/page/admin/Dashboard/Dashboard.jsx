@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer} from 'recharts';
+<<<<<<< HEAD
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../Context/AuthContext';
 import './dashboard.css';
+=======
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+>>>>>>> origin/Dashboard
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const Dashboard = () => {
     const [doctors, setDoctors] = useState([]);
+<<<<<<< HEAD
     const [loader, setLoader] = useState(true);
     const navigate = useNavigate();
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const { id } = useParams();
     const { user } = useAuth();
+=======
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
+
+>>>>>>> origin/Dashboard
     const [chartData, setChartData] = useState(
         months.map((month) => ({ name: month, appointments: 0 }))
     );
 
     useEffect(() => {
         //update url
+<<<<<<< HEAD
         // axios.get('http://localhost:3000/dashboard')
         if (id)
         {
@@ -65,11 +76,21 @@ const Dashboard = () => {
                 setLoader(false);
             });
         
+=======
+        axios.get('http://localhost:3000/dashboard')
+        .then((response) => {
+            setDoctors(response.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching doctor data:', error);
+        });
+>>>>>>> origin/Dashboard
     }, []);
 
     const handleReportClick = (doctor) => {
         setSelectedDoctor(doctor);
 
+<<<<<<< HEAD
         // const updatedData = months.map((month, index) => ({
         // name: month,
         // appointments: doctor.appointments[index],
@@ -97,12 +118,23 @@ const Dashboard = () => {
             const filteredDoctors = doctors.filter((doctor) => doctor.name.toLowerCase().includes(searchValue.toLowerCase()));
             setDoctors(filteredDoctors);
         }
+=======
+        const updatedData = months.map((month, index) => ({
+        name: month,
+        appointments: doctor.appointments[index],
+        }));
+        setChartData(updatedData);
+>>>>>>> origin/Dashboard
     };
 
     return (
         <div className="container mt-5">
 
+<<<<<<< HEAD
             {!selectedDoctor || selectedDoctor.monthlyAppointments.reduce((a, b) => a + b.appointmentCount, 0) == 0 ? <div className="ReportNotFound" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+=======
+        {!selectedDoctor ? <div className="ReportNotFound" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+>>>>>>> origin/Dashboard
                             <img src="/assets/ReportNotFound.jpg" alt="report not found" style={{width: "35%"}}/>
                         </div> :  
         <>
@@ -110,6 +142,7 @@ const Dashboard = () => {
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
+<<<<<<< HEAD
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
@@ -172,6 +205,42 @@ const Dashboard = () => {
                     </table>
                 </div>
             
+=======
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="appointments" fill="rgb(26, 33, 66, 0.85)" />
+                </BarChart>
+            </ResponsiveContainer>
+        </>}
+        <table className="table table-striped mt-5">
+            <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Specialty</th>
+                <th>Total Appointments</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {doctors.map((doctor, index) => (
+                <tr key={index}>
+                <td>{doctor.name}</td>
+                <td>{doctor.specialty}</td>
+                <td>{doctor.appointments.reduce((a, b) => a + b, 0)}</td>
+                <td>
+                    <button
+                    style={{backgroundColor:"#1A2142", color:"white", border:"2px solid #1A2142", padding:"5px 10px", borderRadius:"5px"}}
+                    onClick={() => handleReportClick(doctor)}
+                    >
+                    Report
+                    </button>
+                </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+>>>>>>> origin/Dashboard
         </div>
     );
     };
